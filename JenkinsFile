@@ -1,0 +1,72 @@
+pipeline {
+    agent any
+
+    environment {
+        DOTNET_VERSION = '8.0' // Adjust if needed
+        NODE_VERSION = '22' // Adjust if needed
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/PrathmeshnPawar/aimsr.git' // Change to your repo URL
+            }
+        }
+
+        stage('Setup .NET') {
+            steps {
+                script {
+                    sh "dotnet --version"
+                    sh "dotnet restore backend/"
+                }
+            }
+        }
+
+        stage('Build .NET Web API') {
+            steps {
+                sh "dotnet build backend/ --configuration Release"
+            }
+        }
+
+        stage('Test .NET Web API') {
+            steps {
+                sh "dotnet test backend/"
+            }
+        }
+
+        stage('Setup Node.js') {
+            steps {
+                script {
+                    sh """
+                        export NVM_DIR="\$HOME/.nvm"
+                        [ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
+                        nvm install $NODE_VERSION
+                        nvm use $NODE_VERSION
+                        export PATH="\$NVM_DIR/versions/node/$(nvm version)/bin:\$PATH"
+                        node -v
+                        npm -v
+                    """
+                }
+            }
+        }
+
+        stage('Build Next.js Frontend') {
+            steps {
+                sh """
+                    cd frontend
+                    npm install
+                    npm run build
+                """
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '🎉 Build Successful!'
+        }
+        failure {
+            echo '❌ Build Failed!'
+        }
+    }
+}
