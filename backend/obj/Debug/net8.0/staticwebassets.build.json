@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "gQ7OQafHtjwPtsSPin8+4FDs9RPmS04HW7zKLcc6pHQ=",
+  "Source": "backend",
+  "BasePath": "_content/backend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "backend/wwwroot",
+      "Source": "backend",
+      "ContentRoot": "/home/prathameshpawar/Desktop/Projects/dotnet-crud-project/backend/wwwroot/",
+      "BasePath": "_content/backend",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}
