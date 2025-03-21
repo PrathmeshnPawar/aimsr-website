@@ -15,6 +15,7 @@ This is a project for **Aditya Institute of Management Studies and Research (AIM
 - Course and faculty details management
 - Event and announcement updates
 - Contact and inquiry forms
+- Upcoming: Admin control panel for managing website content and users
 
 ## Setup Instructions
 ### Prerequisites
