@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
-    {"offset": {"line": 24, "column": 0}, "map": {"version":3,"sources":["file:///home/prathameshpawar/Desktop/aimsr-web/src/app/about/page.tsx"],"sourcesContent":["import { motion } from \"framer-motion\";\n\nexport default function AboutPage() {\n  return (\n    <motion.div\n      initial={{ opacity: 0 }}\n      animate={{ opacity: 1 }}\n      transition={{ type: \"spring\", stiffness: 300 }}\n      className=\"p-6 bg-white rounded-xl shadow-md text-center border border-gray-100\"\n    >\n      <h3 className=\"font-semibold text-blue-600 text-xl\">{}</h3>\n      <p className=\"mt-2 text-gray-700\">{}</p>\n    </motion.div>\n  );\n}\n"],"names":[],"mappings":";;;;AAAA;;;AAEe,SAAS;IACtB,qBACE,8OAAC,wJAAA,CAAA,SAAM,CAAC,GAAG;QACT,SAAS;YAAE,SAAS;QAAE;QACtB,SAAS;YAAE,SAAS;QAAE;QACtB,YAAY;YAAE,MAAM;YAAU,WAAW;QAAI;QAC7C,WAAU;;0BAEV,8OAAC;gBAAG,WAAU;;;;;;0BACd,8OAAC;gBAAE,WAAU;;;;;;;;;;;;AAGnB","debugId":null}}]
-}
