@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/prathameshpawar/Desktop/Projects/dotnet-crud-project/backend/backend.csproj": {}
+    "/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/backend.csproj": {}
   },
   "projects": {
-    "/home/prathameshpawar/Desktop/Projects/dotnet-crud-project/backend/backend.csproj": {
+    "/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/prathameshpawar/Desktop/Projects/dotnet-crud-project/backend/backend.csproj",
+        "projectUniqueName": "/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/backend.csproj",
         "projectName": "backend",
-        "projectPath": "/home/prathameshpawar/Desktop/Projects/dotnet-crud-project/backend/backend.csproj",
+        "projectPath": "/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/backend.csproj",
         "packagesPath": "/home/prathameshpawar/.nuget/packages/",
-        "outputPath": "/home/prathameshpawar/Desktop/Projects/dotnet-crud-project/backend/obj/",
+        "outputPath": "/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/prathameshpawar/.nuget/NuGet/NuGet.Config"

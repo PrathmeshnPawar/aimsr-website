@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "gQ7OQafHtjwPtsSPin8+4FDs9RPmS04HW7zKLcc6pHQ=",
+  "Hash": "gvDl8F8gDzvmJ0u8Uobz1aCYFmx9y2c53+vssTa2B3Q=",
   "Source": "backend",
   "BasePath": "_content/backend",
   "Mode": "Default",
@@ -10,7 +10,7 @@
     {
       "Name": "backend/wwwroot",
       "Source": "backend",
-      "ContentRoot": "/home/prathameshpawar/Desktop/Projects/dotnet-crud-project/backend/wwwroot/",
+      "ContentRoot": "/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/wwwroot/",
       "BasePath": "_content/backend",
       "Pattern": "**"
     }
