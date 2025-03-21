@@ -12,6 +12,7 @@ namespace backend.Data
         public DbSet<StudentProfile> StudentProfiles { get; set; }
         public DbSet<ContactForm> ContactForms { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure relationships

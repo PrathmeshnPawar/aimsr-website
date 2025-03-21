@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace backend.Controllers
 {
     [ApiController]
-    [Route("/admission/contactform")]
+    [Route("api/contactform")]
     public class ContactFormController : ControllerBase
     {
         private readonly AppDbContext _context;
