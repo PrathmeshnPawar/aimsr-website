@@ -1,11 +1,11 @@
-# AIMSR Website
+# AIMSR Website (In development)
 
 ## Overview
 This is a project for **Aditya Institute of Management Studies and Research (AIMSR)**. The project is built using **Next.js** for the frontend and **.NET Web API** for the backend, with **PostgreSQL** as the database.
 
 ## Tech Stack
 - **Frontend**: Next.js (App Router, Client Components)
-- **Backend**: .NET Web API (with authentication & authorization using JWT and OAuth)
+- **Backend**: .NET Web API 
 - **Database**: PostgreSQL
 - **Deployment**: Docker
 
