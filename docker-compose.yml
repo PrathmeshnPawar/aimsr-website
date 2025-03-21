@@ -9,7 +9,10 @@ services:
     depends_on:
       - webapi
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:5000
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    env_file:
+      - .env
+    restart: always
 
   webapi:
     build: ./backend
@@ -18,30 +21,56 @@ services:
       - "5000:5000"
       - "5001:5001"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend/aspnetcore-https.pfx:/https/aspnetcore-https.pfx:ro
     environment:
-      - ConnectionStrings__DefaultConnection=Host=postgres;Database=mydb;Username=myuser;Password=mypassword
+      - ASPNETCORE_URLS=http://+:5000;https://+:5001
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetcore-https.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${HTTPS_CERT_PASSWORD}
+    env_file:
+      - .env
+    restart: always
 
   worker:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.sdk
     container_name: dotnet_worker
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend/aspnetcore-https.pfx:/https/aspnetcore-https.pfx:ro
     environment:
-      - ConnectionStrings__DefaultConnection=Host=postgres;Database=mydb;Username=myuser;Password=mypassword
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+    env_file:
+      - .env
+    command:
+      [
+        "sh",
+        "-c",
+        "dotnet tool restore && dotnet ef database update --no-build --verbose && tail -f /dev/null",
+      ]
+    restart: always
 
   postgres:
     image: postgres:16
     container_name: my_postgres
     restart: always
-    environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydb
+    env_file:
+      - .env
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   pg_data:

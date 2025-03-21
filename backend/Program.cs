@@ -1,12 +1,24 @@
 using Microsoft.EntityFrameworkCore;
-using backend.Data; // Or using AimsrCollegeApi.Data;
-using Npgsql.EntityFrameworkCore.PostgreSQL; // Added using directive
-
-
+using backend.Data; // Ensure this namespace is correct
+using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Load HTTPS certificate
+var httpsCertPath = "/https/aspnetcore-https.pfx"; // Using .pfx instead of .pem
+var httpsCertPassword = "root"; // Set this in an environment variable for security
+
+// Configure Kestrel to use HTTPS
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5000); // HTTP
+    options.ListenAnyIP(5001, listenOptions =>
+    {
+        listenOptions.UseHttps(new X509Certificate2(httpsCertPath, httpsCertPassword));
+    });
+});
+
+// Enable CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -14,19 +26,22 @@ builder.Services.AddCors(options =>
                         .AllowAnyMethod()
                         .AllowAnyHeader());
 });
-builder.Services.AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Add services
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add DbContext
+// Configure PostgreSQL database
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
+
+// Enable CORS
 app.UseCors("AllowAll");
-// Configure the HTTP request pipeline.
+
+// Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -34,9 +49,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

@@ -1,19 +1,11 @@
 {
   "Version": 1,
-  "Hash": "gvDl8F8gDzvmJ0u8Uobz1aCYFmx9y2c53+vssTa2B3Q=",
+  "Hash": "7/yvsnDRTixX0vVer35KSjS1HzfM4rGxA/gc1emwSdw=",
   "Source": "backend",
   "BasePath": "_content/backend",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [
-    {
-      "Name": "backend/wwwroot",
-      "Source": "backend",
-      "ContentRoot": "/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/wwwroot/",
-      "BasePath": "_content/backend",
-      "Pattern": "**"
-    }
-  ],
+  "DiscoveryPatterns": [],
   "Assets": []
 }

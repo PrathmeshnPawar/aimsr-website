@@ -152,9 +152,13 @@
 /home/prathameshpawar/Desktop/Projects/dotnet-crud-project/backend/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll
 /home/prathameshpawar/Desktop/Projects/dotnet-crud-project/backend/bin/Debug/net8.0/backend.staticwebassets.runtime.json
 /home/prathameshpawar/Desktop/Projects/dotnet-crud-project/backend/obj/Debug/net8.0/backend.sourcelink.json
+/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/out/web.config
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/appsettings.Development.json
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/appsettings.json
-/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/backend.staticwebassets.runtime.json
+/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/out/appsettings.Development.json
+/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/out/appsettings.json
+/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/out/backend.deps.json
+/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/out/backend.runtimeconfig.json
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/backend
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/backend.deps.json
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/backend.runtimeconfig.json

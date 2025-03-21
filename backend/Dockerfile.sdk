@@ -1,0 +1,20 @@
+# Use the .NET SDK image (not just runtime)
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS worker
+WORKDIR /app
+
+# Install dotnet-ef as a global tool
+RUN dotnet tool install --global dotnet-ef \
+    && dotnet tool restore
+
+# Ensure the tool is available in PATH
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+# Copy and restore dependencies
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy the rest of the source
+COPY . ./
+
+# Set the default command to run migrations
+CMD ["dotnet", "ef", "database", "update", "--no-build", "--verbose"]
