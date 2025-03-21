@@ -151,3 +151,4 @@
 /home/prathameshpawar/Desktop/Projects/dotnet-crud-project/backend/bin/Debug/net8.0/Microsoft.Extensions.Hosting.Abstractions.dll
 /home/prathameshpawar/Desktop/Projects/dotnet-crud-project/backend/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll
 /home/prathameshpawar/Desktop/Projects/dotnet-crud-project/backend/bin/Debug/net8.0/backend.staticwebassets.runtime.json
+/home/prathameshpawar/Desktop/Projects/dotnet-crud-project/backend/obj/Debug/net8.0/backend.sourcelink.json
