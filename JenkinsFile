@@ -2,18 +2,20 @@ pipeline {
     agent any
 
     environment {
-        DOTNET_VERSION = '8.0' // Adjust if needed
-        NODE_VERSION = '22' // Adjust if needed
+        DOTNET_VERSION = '8.0'
+        NODE_VERSION = '22'
         DOCKER_IMAGE_BACKEND = 'aimsr-website-webapi'
         DOCKER_IMAGE_FRONTEND = 'aimsr-website-frontend'
         DOCKER_IMAGE_DB = 'postgres:16'
         DOCKER_IMAGE_WORKER = 'aimsr-website-worker'
+        // DOCKER_REGISTRY = 'https://your-registry-url' // Uncomment and replace with your registry URL
+        // DOCKER_REGISTRY_CREDENTIALS = 'registry-credentials-id' // Uncomment and replace with your registry credential ID
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/PrathmeshnPawar/aimsr.git' // Change to your repo URL
+                git branch: 'master', credentialsId: 'github-pat', url: 'https://github.com/PrathmeshnPawar/aimsr-website.git'
             }
         }
 
@@ -46,22 +48,22 @@ pipeline {
             }
         }
 
-stage('Setup Node.js') {
-    steps {
-        script {
-            sh """
-                export NVM_DIR="\$HOME/.nvm"
-                [ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
-                nvm install $NODE_VERSION
-                nvm use $NODE_VERSION
-                NODE_VERSION_OUTPUT=\$(nvm version)
-                export PATH="\$NVM_DIR/versions/node/\$NODE_VERSION_OUTPUT/bin:\$PATH"
-                node -v
-                npm -v
-            """
+        stage('Setup Node.js') {
+            steps {
+                script {
+                    sh """
+                        export NVM_DIR="\$HOME/.nvm"
+                        [ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
+                        nvm install $NODE_VERSION
+                        nvm use $NODE_VERSION
+                        NODE_VERSION_OUTPUT=\$(nvm version)
+                        export PATH="\$NVM_DIR/versions/node/\$NODE_VERSION_OUTPUT/bin:\$PATH"
+                        node -v
+                        npm -v
+                    """
+                }
+            }
         }
-    }
-}
 
         stage('Build Next.js Frontend') {
             steps {
@@ -81,16 +83,17 @@ stage('Setup Node.js') {
             }
         }
 
-        stage('Push Docker Images') {
-            steps {
-                script {
-                    docker.withRegistry('https://your-registry-url', 'registry-credentials-id') {
-                        docker.image("${DOCKER_IMAGE_BACKEND}").push()
-                        docker.image("${DOCKER_IMAGE_FRONTEND}").push()
-                    }
-                }
-            }
-        }
+        // Uncomment and configure when you're ready to push images to a registry
+        // stage('Push Docker Images') {
+        //     steps {
+        //         script {
+        //             docker.withRegistry("${DOCKER_REGISTRY}", "${DOCKER_REGISTRY_CREDENTIALS}") {
+        //                 docker.image("${DOCKER_IMAGE_BACKEND}").push()
+        //                 docker.image("${DOCKER_IMAGE_FRONTEND}").push()
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     post {
@@ -101,7 +104,11 @@ stage('Setup Node.js') {
             echo '❌ Build Failed!'
         }
         always {
-            sh "docker rmi ${DOCKER_IMAGE_BACKEND} ${DOCKER_IMAGE_FRONTEND}"
+            sh """
+                docker stop \$(docker ps -q --filter ancestor=\${DOCKER_IMAGE_BACKEND}) || true
+                docker stop \$(docker ps -q --filter ancestor=\${DOCKER_IMAGE_FRONTEND}) || true
+                docker rmi -f \${DOCKER_IMAGE_BACKEND} \${DOCKER_IMAGE_FRONTEND} || true
+            """
         }
     }
 }
