@@ -46,21 +46,22 @@ pipeline {
             }
         }
 
-        stage('Setup Node.js') {
-            steps {
-                script {
-                    sh """
-                        export NVM_DIR="\$HOME/.nvm"
-                        [ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
-                        nvm install $NODE_VERSION
-                        nvm use $NODE_VERSION
-                        export PATH="\$NVM_DIR/versions/node/$(nvm version)/bin:\$PATH"
-                        node -v
-                        npm -v
-                    """
-                }
-            }
+stage('Setup Node.js') {
+    steps {
+        script {
+            sh """
+                export NVM_DIR="\$HOME/.nvm"
+                [ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
+                nvm install $NODE_VERSION
+                nvm use $NODE_VERSION
+                NODE_VERSION_OUTPUT=\$(nvm version)
+                export PATH="\$NVM_DIR/versions/node/\$NODE_VERSION_OUTPUT/bin:\$PATH"
+                node -v
+                npm -v
+            """
         }
+    }
+}
 
         stage('Build Next.js Frontend') {
             steps {
