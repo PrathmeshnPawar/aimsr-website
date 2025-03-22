@@ -53,24 +53,28 @@ public class AdmissionController : ControllerBase
             admission.GraduationUniversity,
             admission.GraduationDegree,
             admission.GraduationPercentage,
-            Photo = admission.Photo != null ? Convert.ToBase64String(admission.Photo) : null
+            Photo = admission.Photo != null ? Convert.ToBase64String(admission.Photo) : null,
+            TenthMarksheet = admission.TenthMarksheet != null ? Convert.ToBase64String(admission.TenthMarksheet) : null,
+            TwelfthMarksheet = admission.TwelfthMarksheet != null ? Convert.ToBase64String(admission.TwelfthMarksheet) : null,
+            GraduationMarksheet = admission.GraduationMarksheet != null ? Convert.ToBase64String(admission.GraduationMarksheet) : null
         });
     }
 
-    // Submit admission form with photo upload
+    // Submit admission form with document uploads
     [HttpPost]
-    public async Task<IActionResult> SubmitAdmissionForm([FromForm] StudentProfile model, [FromForm] IFormFile photo)
+    public async Task<IActionResult> SubmitAdmissionForm(
+        [FromForm] StudentProfile model,
+        [FromForm] IFormFile? photo,
+        [FromForm] IFormFile? tenthMarksheet,
+        [FromForm] IFormFile? twelfthMarksheet,
+        [FromForm] IFormFile? graduationMarksheet)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        if (photo != null)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                await photo.CopyToAsync(memoryStream);
-                model.Photo = memoryStream.ToArray(); // Store binary data
-            }
-        }
+        model.Photo = await ConvertFileToByteArray(photo);
+        model.TenthMarksheet = await ConvertFileToByteArray(tenthMarksheet);
+        model.TwelfthMarksheet = await ConvertFileToByteArray(twelfthMarksheet);
+        model.GraduationMarksheet = await ConvertFileToByteArray(graduationMarksheet);
 
         _context.StudentProfiles.Add(model);
         await _context.SaveChangesAsync();
@@ -79,20 +83,28 @@ public class AdmissionController : ControllerBase
     }
 
     // Update admission
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAdmission(int id, [FromForm] StudentProfile model, [FromForm] IFormFile photo)
+    [HttpPut("update/{id}")]
+    public async Task<IActionResult> UpdateAdmission(
+        int id,
+        [FromForm] StudentProfile model,
+        [FromForm] IFormFile? photo)
     {
+        if (id != model.Id)
+        {
+            return BadRequest();
+        }
+
         var admission = await _context.StudentProfiles.FindAsync(id);
         if (admission == null) return NotFound();
 
-        // Preserve old photo if no new photo is provided
+        // Preserve existing photo if no new one is uploaded
         if (photo != null)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                await photo.CopyToAsync(memoryStream);
-                admission.Photo = memoryStream.ToArray();
-            }
+            admission.Photo = await ConvertFileToByteArray(photo);
+        }
+        else
+        {
+            model.Photo = admission.Photo;
         }
 
         _context.Entry(admission).CurrentValues.SetValues(model);
@@ -101,7 +113,7 @@ public class AdmissionController : ControllerBase
         return Ok(admission);
     }
 
-    // Get photo as Base64 (since it's stored in the database)
+    // Get student photo
     [HttpGet("photo/{id}")]
     public async Task<IActionResult> GetPhoto(int id)
     {
@@ -112,7 +124,7 @@ public class AdmissionController : ControllerBase
     }
 
     // Delete admission
-    [HttpDelete("{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> DeleteAdmission(int id)
     {
         var admission = await _context.StudentProfiles.FindAsync(id);
@@ -122,5 +134,15 @@ public class AdmissionController : ControllerBase
         await _context.SaveChangesAsync();
 
         return Ok(new { message = "Admission deleted successfully" });
+    }
+
+    // Helper method to convert IFormFile to byte array
+    private async Task<byte[]?> ConvertFileToByteArray(IFormFile? file)
+    {
+        if (file == null) return null;
+
+        using var memoryStream = new MemoryStream();
+        await file.CopyToAsync(memoryStream);
+        return memoryStream.ToArray();
     }
 }

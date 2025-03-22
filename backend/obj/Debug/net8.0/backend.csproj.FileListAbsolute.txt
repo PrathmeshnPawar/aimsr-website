@@ -164,7 +164,9 @@
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/backend.runtimeconfig.json
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/backend.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/backend.pdb
+/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/AspNet.Security.OAuth.GitHub.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/Humanizer.dll
+/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.Google.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
@@ -198,6 +200,7 @@
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/Microsoft.Extensions.Primitives.dll
+/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/Microsoft.Extensions.WebEncoders.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
@@ -220,6 +223,8 @@
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/System.Diagnostics.DiagnosticSource.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/System.IO.Pipelines.dll
+/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/System.Security.Cryptography.Pkcs.dll
+/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/System.Security.Cryptography.Xml.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/System.Text.Encodings.Web.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/System.Text.Json.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.resources.dll
@@ -287,6 +292,7 @@
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/runtimes/win/lib/net8.0/System.Security.Cryptography.Pkcs.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/obj/Debug/net8.0/backend.csproj.AssemblyReference.cache
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/obj/Debug/net8.0/backend.GeneratedMSBuildEditorConfig.editorconfig

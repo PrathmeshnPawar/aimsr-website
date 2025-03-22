@@ -1,55 +1,72 @@
+using backend.Data;
+using System.Text;
+using backend.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using backend.Data; // Ensure this namespace is correct
-using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Load HTTPS certificate
-var httpsCertPath = "/https/aspnetcore-https.pfx"; // Using .pfx instead of .pem
-var httpsCertPassword = "root"; // Set this in an environment variable for security
+var configuration = builder.Configuration;
 
-// Configure Kestrel to use HTTPS
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.ListenAnyIP(5000); // HTTP
-    options.ListenAnyIP(5001, listenOptions =>
-    {
-        listenOptions.UseHttps(new X509Certificate2(httpsCertPath, httpsCertPassword));
-    });
-});
-
-// Enable CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll",
-        policy => policy.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader());
-});
-
-// Add services
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// Configure PostgreSQL database
+// Add Database Context
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+
+// Add Identity
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
+// Configure JWT Authentication
+var issuer = configuration["Jwt:Issuer"] ?? "default_issuer";
+var audience = configuration["Jwt:Audience"] ?? "default_audience";
+var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"] ?? "default_secret_key");
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = true,
+        ValidIssuer = issuer,
+        ValidateAudience = true,
+        ValidAudience = audience
+    };
+});
+
+// Add OAuth (Google & GitHub)
+builder.Services.AddAuthentication()
+    .AddGoogle(googleOptions =>
+    {
+        googleOptions.ClientId = configuration["Authentication:Google:ClientId"] ?? string.Empty;
+        googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"] ?? string.Empty;
+    })
+    .AddGitHub(githubOptions =>
+    {
+        githubOptions.ClientId = configuration["Authentication:GitHub:ClientId"] ?? string.Empty;
+        githubOptions.ClientSecret = configuration["Authentication:GitHub:ClientSecret"] ?? string.Empty;
+    });
+
+builder.Services.AddAuthorization();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Enable CORS
-app.UseCors("AllowAll");
-
-// Middleware
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

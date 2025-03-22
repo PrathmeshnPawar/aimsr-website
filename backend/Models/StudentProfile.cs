@@ -15,29 +15,29 @@ namespace backend.Models
         public Student? Student { get; set; }
 
         // Personal Details
-        public string? FullName { get; set; }
-        public string? DateOfBirth { get; set; }
-        public string? Gender { get; set; }
-        public string? Email { get; set; }
-        public string? Address { get; set; }
+        public string? FullName { get; set; } = string.Empty;
+        public DateTime? DateOfBirth { get; set; } = DateTime.MinValue;
+        public string? Gender { get; set; } = string.Empty;
+        public string? Email { get; set; } = string.Empty;
+        public string? Address { get; set; } = string.Empty;
 
         // Academic Details - Tenth
-        public string? TenthSchoolName { get; set; }
-        public string? TenthBoard { get; set; }
-        public string? TenthYearOfPassing { get; set; }
-        public string? TenthPercentage { get; set; }
+        public string? TenthSchoolName { get; set; } = string.Empty;
+        public string? TenthBoard { get; set; } = string.Empty;
+        public string? TenthYearOfPassing { get; set; } = string.Empty;
+        public string? TenthPercentage { get; set; } = string.Empty;
 
         // Academic Details - Twelfth
-        public string? TwelfthSchoolName { get; set; }
-        public string? TwelfthBoard { get; set; }
-        public string? TwelfthYearOfPassing { get; set; }
-        public string? TwelfthPercentage { get; set; }
+        public string? TwelfthSchoolName { get; set; } = string.Empty;
+        public string? TwelfthBoard { get; set; } = string.Empty;
+        public string? TwelfthYearOfPassing { get; set; } = string.Empty;
+        public string? TwelfthPercentage { get; set; } = string.Empty;
 
         // Academic Details - Graduation
-        public string? GraduationCollegeName { get; set; }
-        public string? GraduationUniversity { get; set; }
-        public string? GraduationDegree { get; set; }
-        public string? GraduationPercentage { get; set; }
+        public string? GraduationCollegeName { get; set; } = string.Empty;
+        public string? GraduationUniversity { get; set; } = string.Empty;
+        public string? GraduationDegree { get; set; } = string.Empty;
+        public string? GraduationPercentage { get; set; } = string.Empty;
 
         // Documents
         public byte[]? Photo { get; set; }
