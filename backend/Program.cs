@@ -26,6 +26,19 @@ var issuer = configuration["Jwt:Issuer"] ?? "default_issuer";
 var audience = configuration["Jwt:Audience"] ?? "default_audience";
 var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"] ?? "default_secret_key");
 
+// Inside Program.cs or Startup.cs ConfigureServices method:
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000") // Corrected origin
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
+// Move Authentication and OAuth service registration BEFORE builder.Build()
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,7 +75,10 @@ builder.Services.AddAuthentication()
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
+// Build the application AFTER all service registrations
 var app = builder.Build();
+
+app.UseCors("AllowAll"); // Corrected to use the "AllowAll" policy
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -7,32 +7,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class LatestStudentProfileUpdate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Students_Courses_CourseId",
-                table: "Students");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Students_StudentProfiles_StudentProfileId",
-                table: "Students");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Students_StudentProfileId",
-                table: "Students");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "DateOfBirth",
-                table: "StudentProfiles",
-                type: "timestamp with time zone",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -71,6 +50,37 @@ namespace backend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContactForms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FullName = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    Phone = table.Column<string>(type: "text", nullable: true),
+                    Message = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactForms", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Courses",
+                columns: table => new
+                {
+                    CourseId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CourseName = table.Column<string>(type: "text", nullable: false),
+                    CourseDescription = table.Column<string>(type: "text", nullable: true),
+                    CourseDuration = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Courses", x => x.CourseId);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,11 +189,69 @@ namespace backend.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_StudentProfiles_StudentId",
-                table: "StudentProfiles",
-                column: "StudentId",
-                unique: true);
+            migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FirstName = table.Column<string>(type: "text", nullable: true),
+                    LastName = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    CourseId = table.Column<int>(type: "integer", nullable: false),
+                    StudentProfileId = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Students_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "CourseId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StudentProfiles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    StudentId = table.Column<int>(type: "integer", nullable: false),
+                    FullName = table.Column<string>(type: "text", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Gender = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    Address = table.Column<string>(type: "text", nullable: true),
+                    TenthSchoolName = table.Column<string>(type: "text", nullable: true),
+                    TenthBoard = table.Column<string>(type: "text", nullable: true),
+                    TenthYearOfPassing = table.Column<string>(type: "text", nullable: true),
+                    TenthPercentage = table.Column<string>(type: "text", nullable: true),
+                    TwelfthSchoolName = table.Column<string>(type: "text", nullable: true),
+                    TwelfthBoard = table.Column<string>(type: "text", nullable: true),
+                    TwelfthYearOfPassing = table.Column<string>(type: "text", nullable: true),
+                    TwelfthPercentage = table.Column<string>(type: "text", nullable: true),
+                    GraduationCollegeName = table.Column<string>(type: "text", nullable: true),
+                    GraduationUniversity = table.Column<string>(type: "text", nullable: true),
+                    GraduationDegree = table.Column<string>(type: "text", nullable: true),
+                    GraduationPercentage = table.Column<string>(type: "text", nullable: true),
+                    Photo = table.Column<byte[]>(type: "bytea", nullable: true),
+                    TenthMarksheet = table.Column<byte[]>(type: "bytea", nullable: true),
+                    TwelfthMarksheet = table.Column<byte[]>(type: "bytea", nullable: true),
+                    GraduationMarksheet = table.Column<byte[]>(type: "bytea", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudentProfiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StudentProfiles_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -222,34 +290,21 @@ namespace backend.Migrations
                 column: "NormalizedUserName",
                 unique: true);
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_StudentProfiles_Students_StudentId",
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentProfiles_StudentId",
                 table: "StudentProfiles",
                 column: "StudentId",
-                principalTable: "Students",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                unique: true);
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Students_Courses_CourseId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_CourseId",
                 table: "Students",
-                column: "CourseId",
-                principalTable: "Courses",
-                principalColumn: "CourseId",
-                onDelete: ReferentialAction.Restrict);
+                column: "CourseId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_StudentProfiles_Students_StudentId",
-                table: "StudentProfiles");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Students_Courses_CourseId",
-                table: "Students");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -266,45 +321,22 @@ namespace backend.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ContactForms");
+
+            migrationBuilder.DropTable(
+                name: "StudentProfiles");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            migrationBuilder.DropIndex(
-                name: "IX_StudentProfiles_StudentId",
-                table: "StudentProfiles");
+            migrationBuilder.DropTable(
+                name: "Students");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "DateOfBirth",
-                table: "StudentProfiles",
-                type: "text",
-                nullable: true,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone",
-                oldNullable: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Students_StudentProfileId",
-                table: "Students",
-                column: "StudentProfileId",
-                unique: true);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Students_Courses_CourseId",
-                table: "Students",
-                column: "CourseId",
-                principalTable: "Courses",
-                principalColumn: "CourseId",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Students_StudentProfiles_StudentProfileId",
-                table: "Students",
-                column: "StudentProfileId",
-                principalTable: "StudentProfiles",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+            migrationBuilder.DropTable(
+                name: "Courses");
         }
     }
 }
