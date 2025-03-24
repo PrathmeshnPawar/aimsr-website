@@ -4,34 +4,32 @@ import Link from "next/link";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { motion, AnimatePresence } from "framer-motion";
+import { useForm } from "react-hook-form";
 
 export default function HomePage() {
   const [showEnquiry, setShowEnquiry] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
   const [submitting, setSubmitting] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      fullName: "",
+      email: "",
+      phone: "",
+      message: "",
+    },
+  });
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: any) => {
     setSubmitting(true);
 
     try {
@@ -40,17 +38,12 @@ export default function HomePage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(data),
       });
 
       if (response.ok) {
         alert("Form submitted successfully!");
-        setFormData({
-          fullName: "",
-          email: "",
-          phone: "",
-          message: "",
-        });
+        reset();
         setShowEnquiry(false);
       } else {
         alert("Failed to submit form. Please try again.");
@@ -121,42 +114,30 @@ export default function HomePage() {
               <h3 className="text-2xl font-bold text-blue-600 mb-6">
                 Enquiry Form
               </h3>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <input
                   type="text"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleInputChange}
+                  {...register("fullName", { required: true })}
                   placeholder="Full Name"
                   className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
-                  required
                 />
                 <input
                   type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
+                  {...register("email", { required: true })}
                   placeholder="Email"
                   className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
-                  required
                 />
                 <input
                   type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
+                  {...register("phone", { required: true })}
                   placeholder="Phone"
                   className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
-                  required
                 />
                 <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
+                  {...register("message", { required: true })}
                   placeholder="Message"
                   className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
                   rows={4}
-                  required
                 ></textarea>
                 <div className="flex justify-end space-x-3">
                   <motion.button

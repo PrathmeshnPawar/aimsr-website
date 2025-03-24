@@ -8,6 +8,9 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAcademicsMenuOpen, setIsAcademicsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [isMobileAboutOpen, setIsMobileAboutOpen] = useState(false);
+  const [isMobileAcademicsOpen, setIsMobileAcademicsOpen] = useState(false);
+  const [isLoginMenuOpen, setIsLoginMenuOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -32,7 +35,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link
               href="/"
-              className="hidden md:flex font-mono font-bold tracking-wider text-white text-3xl hover:text-blue-200 transition-all duration-300 transform hover:scale-105 ml-4"
+              className="flex font-mono font-bold tracking-wider text-white text-3xl hover:text-blue-200 transition-all duration-300 transform hover:scale-105 ml-4"
             >
               <Image
                 src="/logo.png"
@@ -111,6 +114,25 @@ const Navbar = () => {
             >
               Placements
             </Link>
+            <div className="relative group">
+              <button className="bg-white text-blue-800 px-6 py-2 rounded-full font-semibold hover:bg-blue-100 transition-all duration-300 transform hover:scale-110">
+                Login
+              </button>
+              <div className="absolute top-full right-0 bg-white shadow-2xl rounded-lg py-2 w-48 z-10 hidden group-hover:block transform transition-all duration-300 hover:scale-105">
+                <Link
+                  href="/student-login"
+                  className="block px-6 py-3 text-lg text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-all duration-300 rounded-md mx-2"
+                >
+                  Student Login
+                </Link>
+                <Link
+                  href="/admin-login"
+                  className="block px-6 py-3 text-lg text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-all duration-300 rounded-md mx-2"
+                >
+                  Admin Login
+                </Link>
+              </div>
+            </div>
           </div>
 
           {/* Mobile Menu */}
@@ -134,27 +156,127 @@ const Navbar = () => {
               </svg>
             </button>
             {isMobileMenuOpen && (
-              <div className="absolute top-20 right-0 left-0 bg-white shadow-2xl rounded-b-lg animate-fadeIn">
+              <div className="absolute top-24 right-0 left-0 bg-white shadow-2xl rounded-b-lg animate-fadeIn">
+                <div>
+                  <button
+                    onClick={() => setIsMobileAboutOpen(!isMobileAboutOpen)}
+                    className="w-full px-6 py-3 text-lg font-medium text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-all duration-300 flex justify-between items-center"
+                  >
+                    About
+                    <svg
+                      className={`w-5 h-5 transform transition-transform ${
+                        isMobileAboutOpen ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+                  {isMobileAboutOpen && (
+                    <div className="bg-gray-50">
+                      <Link
+                        href="/about/differentiators@-AIMSR"
+                        className="block px-8 py-2 text-gray-600 hover:bg-blue-50"
+                        onClick={toggleMobileMenu}
+                      >
+                        Differentiators@ AIMSR
+                      </Link>
+                      <Link
+                        href="/about/vision-mission"
+                        className="block px-8 py-2 text-gray-600 hover:bg-blue-50"
+                        onClick={toggleMobileMenu}
+                      >
+                        Vision & Mission
+                      </Link>
+                      <Link
+                        href="/about/faculty"
+                        className="block px-8 py-2 text-gray-600 hover:bg-blue-50"
+                        onClick={toggleMobileMenu}
+                      >
+                        Faculty
+                      </Link>
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <button
+                    onClick={() =>
+                      setIsMobileAcademicsOpen(!isMobileAcademicsOpen)
+                    }
+                    className="w-full px-6 py-3 text-lg font-medium text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-all duration-300 flex justify-between items-center"
+                  >
+                    Academics
+                    <svg
+                      className={`w-5 h-5 transform transition-transform ${
+                        isMobileAcademicsOpen ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+                  {isMobileAcademicsOpen && (
+                    <div className="bg-gray-50">
+                      <Link
+                        href="/academics/courses"
+                        className="block px-8 py-2 text-gray-600 hover:bg-blue-50"
+                        onClick={toggleMobileMenu}
+                      >
+                        Courses
+                      </Link>
+                      <Link
+                        href="/academics/fee-structure"
+                        className="block px-8 py-2 text-gray-600 hover:bg-blue-50"
+                        onClick={toggleMobileMenu}
+                      >
+                        Fee Structure
+                      </Link>
+                      <Link
+                        href="/academics/admission-procedure"
+                        className="block px-8 py-2 text-gray-600 hover:bg-blue-50"
+                        onClick={toggleMobileMenu}
+                      >
+                        Admission Procedure
+                      </Link>
+                    </div>
+                  )}
+                </div>
+
                 <Link
-                  href="/about"
+                  href="/placements"
                   className="block px-6 py-3 text-lg font-medium text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-all duration-300"
                   onClick={toggleMobileMenu}
                 >
-                  About
+                  Placements
                 </Link>
                 <Link
-                  href="/academics"
+                  href="/student-login"
                   className="block px-6 py-3 text-lg font-medium text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-all duration-300"
                   onClick={toggleMobileMenu}
                 >
-                  Academics
+                  Student Login
                 </Link>
                 <Link
-                  href="/contact"
+                  href="/admin-login"
                   className="block px-6 py-3 text-lg font-medium text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-all duration-300"
                   onClick={toggleMobileMenu}
                 >
-                  Contact
+                  Admin Login
                 </Link>
               </div>
             )}
