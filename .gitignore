@@ -1,2 +1,3 @@
 node_modules/
 .next/
+backend/bin/Debug/net8.0/appsettings.json
