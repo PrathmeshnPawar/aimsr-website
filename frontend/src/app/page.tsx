@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 
 export default function HomePage() {
   const [showEnquiry, setShowEnquiry] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -33,13 +34,16 @@ export default function HomePage() {
     setSubmitting(true);
 
     try {
-      const response = await fetch("https://localhost:5001/api/contactform", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/contactform`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      });
+      );
 
       if (response.ok) {
         alert("Form submitted successfully!");
@@ -161,6 +165,20 @@ export default function HomePage() {
                 </div>
               </form>
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Notification */}
+      <AnimatePresence>
+        {showNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg"
+          >
+            Form submitted successfully!
           </motion.div>
         )}
       </AnimatePresence>

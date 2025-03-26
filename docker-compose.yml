@@ -7,7 +7,7 @@ services:
     depends_on:
       - webapi
     environment:
-      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+      - NEXT_PUBLIC_API_URL=http://192.168.0.113:5000
     env_file:
       - .env
     restart: always
@@ -23,11 +23,14 @@ services:
         condition: service_healthy
     volumes:
       - ./backend/aspnetcore-https.pfx:/https/aspnetcore-https.pfx:ro
+      - ./wwwroot/uploads:/app/wwwroot/uploads # Persistent storage
     environment:
       - ASPNETCORE_URLS=http://+:5000;https://+:5001
-      - DefaultConnection=Host=my_postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=my_postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetcore-https.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${HTTPS_CERT_PASSWORD}
+
     env_file:
       - .env
     restart: no
@@ -43,7 +46,7 @@ services:
     volumes:
       - ./backend/aspnetcore-https.pfx:/https/aspnetcore-https.pfx:ro
     environment:
-      - DefaultConnection=Host=my_postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - ConnectionStrings__DefaultConnection=Host=my_postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
     env_file:
       - .env
     command:
@@ -52,7 +55,7 @@ services:
         "-c",
         "dotnet tool restore && dotnet ef database update --no-build --verbose && tail -f /dev/null",
       ]
-    restart: no
+    restart: always
 
   postgres:
     image: postgres:16

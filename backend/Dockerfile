@@ -26,4 +26,4 @@ ENV PATH="$PATH:/root/.dotnet/tools"
 EXPOSE 5000 5001
 
 # Run the application
-CMD ["dotnet", "backend.dll", "--urls", "http://0.0.0.0:5000;https://0.0.0.0:5001"]
+CMD ["dotnet", "backend.dll", "--urls", "http://192.168.0.113:5000;https://192.168.0.113:5001"]

@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
 
+using Microsoft.Extensions.FileProviders;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
@@ -21,7 +23,23 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-// Configure JWT Authentication
+
+// Configure CORS
+// Configure CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000", "http://192.168.0.113:3000","http://192.168.0.108:3000") // Add mobile-accessible origin
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
+});
+
+
+// Load JWT settings
 var issuer = configuration["Jwt:Issuer"] ?? "default_issuer";
 var audience = configuration["Jwt:Audience"] ?? "default_audience";
 var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"] ?? "default_secret_key");
@@ -75,7 +93,7 @@ builder.Services.AddAuthentication()
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
-// Build the application AFTER all service registrations
+
 var app = builder.Build();
 
 app.UseCors("AllowAll"); // Corrected to use the "AllowAll" policy
@@ -84,5 +102,17 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+
+
+app.Urls.Add("http://0.0.0.0:5000"); // Keep for local testing
+app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads")),
+    RequestPath = "/uploads"
+});// Enable serving static files from wwwroot
+
 
 app.Run();

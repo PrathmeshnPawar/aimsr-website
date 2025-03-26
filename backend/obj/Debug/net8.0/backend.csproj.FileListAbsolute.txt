@@ -159,6 +159,7 @@
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/out/appsettings.json
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/out/backend.deps.json
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/out/backend.runtimeconfig.json
+/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/backend.staticwebassets.runtime.json
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/backend
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/backend.deps.json
 /home/prathameshpawar/Desktop/Projects/aimsr-website/backend/bin/Debug/net8.0/backend.runtimeconfig.json
