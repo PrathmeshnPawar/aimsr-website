@@ -1,3 +1,5 @@
+// Program.cs (backend)
+
 using backend.Data;
 using System.Text;
 using backend.Models;
@@ -5,58 +7,44 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-
 using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var configuration = builder.Configuration;
 
-// Add Database Context
+// ✅ Database Context
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
-// Add Identity
+// ✅ Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-
-// Configure CORS
-// Configure CORS
+// ✅ Configure CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000", "http://192.168.0.113:3000","http://192.168.0.108:3000") // Add mobile-accessible origin
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials();
+            policy.WithOrigins("http://localhost:3000", "http://192.168.0.113:3000", "http://192.168.0.108:3000", "http://100.66.106.128:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
         });
 });
 
+// ✅ JWT Authentication
+var issuer = configuration["Jwt:Issuer"];
+var audience = configuration["Jwt:Audience"];
+var key = configuration["Jwt:Key"];
 
-// Load JWT settings
-var issuer = configuration["Jwt:Issuer"] ?? "default_issuer";
-var audience = configuration["Jwt:Audience"] ?? "default_audience";
-var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"] ?? "default_secret_key");
-
-// Inside Program.cs or Startup.cs ConfigureServices method:
-builder.Services.AddCors(options =>
+if (string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience) || string.IsNullOrEmpty(key))
 {
-    options.AddPolicy("AllowAll",
-        builder =>
-        {
-            builder.WithOrigins("http://localhost:3000") // Corrected origin
-                   .AllowAnyHeader()
-                   .AllowAnyMethod();
-        });
-});
+    throw new Exception("JWT configuration is missing in appsettings.json!");
+}
 
-// Move Authentication and OAuth service registration BEFORE builder.Build()
+var keyBytes = Encoding.UTF8.GetBytes(key);
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -69,7 +57,7 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
+        IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
         ValidateIssuer = true,
         ValidIssuer = issuer,
         ValidateAudience = true,
@@ -77,42 +65,44 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Add OAuth (Google & GitHub)
-builder.Services.AddAuthentication()
-    .AddGoogle(googleOptions =>
-    {
-        googleOptions.ClientId = configuration["Authentication:Google:ClientId"] ?? string.Empty;
-        googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"] ?? string.Empty;
-    })
-    .AddGitHub(githubOptions =>
-    {
-        githubOptions.ClientId = configuration["Authentication:GitHub:ClientId"] ?? string.Empty;
-        githubOptions.ClientSecret = configuration["Authentication:GitHub:ClientSecret"] ?? string.Empty;
-    });
-
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
-
 var app = builder.Build();
 
-app.UseCors("AllowAll"); // Corrected to use the "AllowAll" policy
+// ✅ Configure the HTTP request pipeline
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-
-
-app.Urls.Add("http://0.0.0.0:5000"); // Keep for local testing
-app.UseStaticFiles();
-app.UseStaticFiles(new StaticFileOptions
+// ✅ Serve Static Files (Conditional)
+if (args == null || !args.Contains("--migration"))
 {
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads")),
-    RequestPath = "/uploads"
-});// Enable serving static files from wwwroot
+    app.UseStaticFiles();
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads")),
+        RequestPath = "/uploads"
+    });
+}
 
+// ✅ Ensure wwwroot/uploads Exists
+var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+if (!Directory.Exists(uploadsDir))
+{
+    Directory.CreateDirectory(uploadsDir);
+}
 
+app.Urls.Add("http://0.0.0.0:5000");
 app.Run();

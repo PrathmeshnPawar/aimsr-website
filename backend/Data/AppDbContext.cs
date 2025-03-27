@@ -13,6 +13,7 @@ namespace backend.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<StudentProfile> StudentProfiles { get; set; }
         public DbSet<ContactForm> ContactForms { get; set; }
+        public DbSet<RegisterModel> RegisterModels { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

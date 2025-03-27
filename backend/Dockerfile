@@ -1,29 +1,27 @@
-# Use the .NET SDK image for building
+# Stage 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-# Install dotnet-ef globally and set PATH
-RUN dotnet tool install --global dotnet-ef
-ENV PATH="$PATH:/root/.dotnet/tools"
-
-# Copy and restore dependencies
-COPY *.csproj ./
+# Copy the project file and restore dependencies
+COPY backend.csproj ./
 RUN dotnet restore
 
-# Copy the rest of the source and build
+# Copy the rest of the application
 COPY . ./
-RUN dotnet publish -c Release -o /app/out
 
-# Use runtime image
+# Build and publish the application
+RUN dotnet build --configuration Release --no-restore
+RUN dotnet publish -c Release -o /out --no-restore
+
+# Stage 2: Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=build /app/out .
 
-# Set PATH for the runtime image as well
-ENV PATH="$PATH:/root/.dotnet/tools"
+# Copy the built application from the build stage
+COPY --from=build /out ./
 
 # Expose ports
 EXPOSE 5000 5001
 
 # Run the application
-CMD ["dotnet", "backend.dll", "--urls", "http://192.168.0.113:5000;https://192.168.0.113:5001"]
+ENTRYPOINT ["dotnet", "backend.dll"]
