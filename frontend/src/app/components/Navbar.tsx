@@ -126,7 +126,7 @@ const Navbar = () => {
                   Student Login
                 </Link>
                 <Link
-                  href="/admin-login"
+                  href="/admin"
                   className="block px-6 py-3 text-lg text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-all duration-300 rounded-md mx-2"
                 >
                   Admin Login

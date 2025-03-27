@@ -310,17 +310,12 @@ namespace backend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("StudentProfileId")
-                        .HasColumnType("integer");
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -331,11 +326,11 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.StudentProfile", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("StudentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("StudentId"));
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
@@ -370,9 +365,6 @@ namespace backend.Migrations
                     b.Property<byte[]>("Photo")
                         .HasColumnType("bytea");
 
-                    b.Property<int>("StudentId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("TenthBoard")
                         .HasColumnType("text");
 
@@ -403,10 +395,7 @@ namespace backend.Migrations
                     b.Property<string>("TwelfthYearOfPassing")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("StudentId")
-                        .IsUnique();
+                    b.HasKey("StudentId");
 
                     b.ToTable("StudentProfiles");
                 });
@@ -471,22 +460,6 @@ namespace backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
-                });
-
-            modelBuilder.Entity("backend.Models.StudentProfile", b =>
-                {
-                    b.HasOne("backend.Models.Student", "Student")
-                        .WithOne("StudentProfile")
-                        .HasForeignKey("backend.Models.StudentProfile", "StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("backend.Models.Student", b =>
-                {
-                    b.Navigation("StudentProfile");
                 });
 #pragma warning restore 612, 618
         }

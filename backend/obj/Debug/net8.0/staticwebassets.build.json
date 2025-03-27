@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "7dBp4nBcUGpCwmxts9LX354k5iFbFINZ65gVHfSqy/o=",
+  "Source": "backend",
+  "BasePath": "_content/backend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "backend/wwwroot",
+      "Source": "backend",
+      "ContentRoot": "/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/wwwroot/",
+      "BasePath": "_content/backend",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/wwwroot/.gitkeep",
+      "SourceId": "backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/prathameshpawar/Desktop/Projects/aimsr-website/backend/wwwroot/",
+      "BasePath": "_content/backend",
+      "RelativePath": ".gitkeep",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/.gitkeep"
+    }
+  ]
+}

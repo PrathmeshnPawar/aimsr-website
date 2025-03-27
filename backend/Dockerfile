@@ -10,6 +10,7 @@ RUN dotnet restore
 COPY . ./
 
 # Build and publish the application
+RUN dotnet restore
 RUN dotnet build --configuration Release --no-restore
 RUN dotnet publish -c Release -o /out --no-restore
 

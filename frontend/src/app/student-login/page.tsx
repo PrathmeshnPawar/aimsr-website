@@ -1,72 +1,54 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { loginStudent } from "./actions";
-import Cookies from "js-cookie";
+import { useState } from "react";
 
-export default function StudentLogin() {
-  const [error, setError] = useState("");
+export default function LoginPage() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+  async function handleLogin() {
+    const res = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+      headers: { "Content-Type": "application/json" },
+    });
 
-    const res = await loginStudent(formData);
-    if (res.success) {
-      router.push("/student-login/dashboard");
+    if (res.ok) {
+      document.cookie = "token=valid_token; path=/"; // Store token in cookies
+      router.push("/dashboard"); // Redirect to dashboard
     } else {
-      setError(res.message);
+      alert("Login failed");
     }
   }
 
-  function handleOAuthLogin(provider: "google" | "github") {
-    window.location.href = `http://localhost:5000/api/auth/${provider}-login`;
-  }
-
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-bold mb-4">Student Login</h2>
-      {error && <p className="text-red-500">{error}</p>}
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-          className="w-full p-2 mb-4 border rounded"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          className="w-full p-2 mb-4 border rounded"
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        >
-          Login
-        </button>
-      </form>
-
-      <div className="mt-4 text-center">
-        <button
-          onClick={() => handleOAuthLogin("google")}
-          className="w-full bg-red-500 text-white py-2 rounded mt-2 hover:bg-red-600"
-        >
-          Login with Google
-        </button>
-
-        <button
-          onClick={() => handleOAuthLogin("github")}
-          className="w-full bg-gray-800 text-white py-2 rounded mt-2 hover:bg-gray-900"
-        >
-          Login with GitHub
-        </button>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
+        <h1 className="text-3xl font-bold text-center text-gray-800">
+          Student Login
+        </h1>
+        <div className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button
+            onClick={handleLogin}
+            className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Login
+          </button>
+        </div>
       </div>
     </div>
   );

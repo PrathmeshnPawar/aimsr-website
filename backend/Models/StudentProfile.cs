@@ -6,13 +6,7 @@ namespace backend.Models
     public class StudentProfile
     {
         [Key]
-        [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
-        public int StudentId { get; set; }
-        [ForeignKey("StudentId")]
-        public Student? Student { get; set; }
+        public int StudentId { get; set; } // Primary Key
 
         // Personal Details
         public string? FullName { get; set; } = string.Empty;
@@ -41,9 +35,8 @@ namespace backend.Models
 
         // Documents
         public byte[]? Photo { get; set; }
-                public byte[]? TenthMarksheet { get; set; }
-                public byte[]? TwelfthMarksheet { get; set; }
-                public byte[]? GraduationMarksheet { get; set; }
-
+        public byte[]? TenthMarksheet { get; set; }
+        public byte[]? TwelfthMarksheet { get; set; }
+        public byte[]? GraduationMarksheet { get; set; }
     }
 }

@@ -59,6 +59,7 @@ interface State {
   academicDetails: AcademicDetailsData;
   documents: DocumentsData;
   error: string;
+  submissionSuccess: boolean;
 }
 
 const steps: string[] = [
@@ -105,9 +106,10 @@ class AdmissionForm extends Component<{}, State> {
       graduationMarksheet: null,
     },
     error: "",
+    submissionSuccess: false,
   };
 
-  private readonly API_URL = "https://localhost:5001/api/admission";
+  private readonly API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/admission`;
 
   updateEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -489,10 +491,16 @@ class AdmissionForm extends Component<{}, State> {
         <h3 className="text-xl font-semibold">Upload your 10th Marksheet</h3>
         <Input
           type="file"
-          accept=".pdf,.jpg,.jpeg,.png"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            this.handleFileChange(e, "tenthMarksheet")
-          }
+          accept="application/pdf"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files?.[0];
+            if (file && file.type !== "application/pdf") {
+              this.setState({ error: "Please upload only PDF files" });
+              e.target.value = "";
+              return;
+            }
+            this.handleFileChange(e, "tenthMarksheet");
+          }}
           required
         />
       </div>
@@ -501,10 +509,16 @@ class AdmissionForm extends Component<{}, State> {
         <h3 className="text-xl font-semibold">Upload your 12th Marksheet</h3>
         <Input
           type="file"
-          accept=".pdf,.jpg,.jpeg,.png"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            this.handleFileChange(e, "twelfthMarksheet")
-          }
+          accept="application/pdf"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files?.[0];
+            if (file && file.type !== "application/pdf") {
+              this.setState({ error: "Please upload only PDF files" });
+              e.target.value = "";
+              return;
+            }
+            this.handleFileChange(e, "twelfthMarksheet");
+          }}
           required
         />
       </div>
@@ -638,7 +652,7 @@ class AdmissionForm extends Component<{}, State> {
 
         const response = await this.submitAdmissionForm(formData);
         if (response.success) {
-          this.setState({ activeStep: steps.length });
+          this.setState({ activeStep: steps.length, submissionSuccess: true });
           toast.success("Application submitted successfully!");
         }
       } catch (error) {
@@ -696,7 +710,12 @@ class AdmissionForm extends Component<{}, State> {
 
               {this.state.activeStep === steps.length ? (
                 <div className="text-center">
-                  <p>Application submitted successfully!</p>
+                  <div className="bg-green-100 text-green-800 p-4 rounded-lg mb-4">
+                    <p className="text-lg font-semibold">
+                      Application submitted successfully!
+                    </p>
+                    <p>Thank you for submitting your admission application.</p>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={this.handleSubmit}>
@@ -721,7 +740,10 @@ class AdmissionForm extends Component<{}, State> {
                         }
                         onClick={
                           this.state.activeStep === steps.length - 1
-                            ? undefined
+                            ? () => {
+                                this.handleSubmit;
+                                window.location.href = "/";
+                              }
                             : this.handleNext
                         }
                       >

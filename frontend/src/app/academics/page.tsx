@@ -46,7 +46,7 @@ export default function Admissions() {
               whileHover={{ scale: 1.1, backgroundColor: "#fff" }}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400 }}
-              href="/apply"
+              href="/courses/postgraduate/MCA"
               className="mt-6 inline-block px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold shadow-md hover:bg-gray-100"
             >
               Apply Now

@@ -20,12 +20,9 @@ namespace backend.Data
             // ✅ Ensure Identity tables are properly configured
             base.OnModelCreating(modelBuilder);
 
-            // 🔹 StudentProfile & Student Relationship
+            // 🔹 StudentProfile Key Configuration
             modelBuilder.Entity<StudentProfile>()
-                .HasOne(sp => sp.Student)
-                .WithOne(s => s.StudentProfile)
-                .HasForeignKey<StudentProfile>(sp => sp.StudentId) // Foreign key in StudentProfile
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasKey(sp => sp.StudentId); // Use StudentId as primary key
 
             // 🔹 Student & Course Relationship
             modelBuilder.Entity<Student>()
@@ -36,7 +33,7 @@ namespace backend.Data
 
             // 🔹 Required fields
             modelBuilder.Entity<Student>()
-                .Property(s => s.Name)
+                .Property(s => s.FirstName)
                 .IsRequired();
 
             modelBuilder.Entity<Course>()

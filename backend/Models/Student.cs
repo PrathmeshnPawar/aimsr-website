@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace backend.Models // Or AimsrCollegeApi.Models
+namespace backend.Models
 {
     public class Student
     {
@@ -9,14 +9,22 @@ namespace backend.Models // Or AimsrCollegeApi.Models
         [Required]
         public int Id { get; set; }
 
-        public string? FirstName { get; set; } // Made nullable
-        public string? LastName { get; set; } // Made nullable
-        public string? Email { get; set; } // Made nullable
-        public int CourseId { get; set; }
-        public Course? Course { get; set; } // Changed from Courses to Course
-        public int StudentProfileId { get; set; } // Foreign key linking to StudentProfile
+        [Required]
+        public string FirstName { get; set; } = string.Empty;
 
-              public StudentProfile? StudentProfile { get; set; } // Navigation property
-        public string? Name { get; set; } // Added Name property
+        [Required]
+        public string LastName { get; set; } = string.Empty;
+
+        [EmailAddress]
+        public string? Email { get; set; }
+
+        // Foreign Key for Course
+        [Required]
+        public int CourseId { get; set; }
+
+        [ForeignKey("CourseId")]
+        public Course? Course { get; set; }
+
+        // Removed One-to-One relationship with StudentProfile
     }
 }

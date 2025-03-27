@@ -7,6 +7,7 @@ using backend.Data;
 using backend.Models;
 using Microsoft.AspNetCore.Http;
 
+
 [Route("api/admission")]
 [ApiController]
 public class AdmissionController : ControllerBase
@@ -18,7 +19,6 @@ public class AdmissionController : ControllerBase
         _context = context;
     }
 
-    // Get all admissions
     [HttpGet]
     public async Task<IActionResult> GetAllAdmissions()
     {
@@ -26,7 +26,6 @@ public class AdmissionController : ControllerBase
         return Ok(admissions);
     }
 
-    // Get admission by ID
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAdmission(int id)
     {
@@ -35,7 +34,7 @@ public class AdmissionController : ControllerBase
 
         return Ok(new
         {
-            admission.Id,
+            admission.StudentId,
             admission.FullName,
             admission.DateOfBirth,
             admission.Gender,
@@ -60,7 +59,6 @@ public class AdmissionController : ControllerBase
         });
     }
 
-    // Submit admission form with document uploads
     [HttpPost]
     public async Task<IActionResult> SubmitAdmissionForm(
         [FromForm] StudentProfile model,
@@ -69,27 +67,42 @@ public class AdmissionController : ControllerBase
         [FromForm] IFormFile? twelfthMarksheet,
         [FromForm] IFormFile? graduationMarksheet)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                           .Select(e => e.ErrorMessage)
+                                           .ToList();
+            return BadRequest(errors); // Return the validation errors to help debug
+        }
 
         model.Photo = await ConvertFileToByteArray(photo);
         model.TenthMarksheet = await ConvertFileToByteArray(tenthMarksheet);
         model.TwelfthMarksheet = await ConvertFileToByteArray(twelfthMarksheet);
         model.GraduationMarksheet = await ConvertFileToByteArray(graduationMarksheet);
 
-        _context.StudentProfiles.Add(model);
-        await _context.SaveChangesAsync();
+        try
+        {
+            _context.StudentProfiles.Add(model);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
 
-        return CreatedAtAction(nameof(GetAdmission), new { id = model.Id }, model);
+        return CreatedAtAction(nameof(GetAdmission), new { id = model.StudentId }, model);
     }
 
-    // Update admission
+
+
+
     [HttpPut("update/{id}")]
     public async Task<IActionResult> UpdateAdmission(
         int id,
         [FromForm] StudentProfile model,
         [FromForm] IFormFile? photo)
     {
-        if (id != model.Id)
+        if (id != model.StudentId)
         {
             return BadRequest();
         }
@@ -97,14 +110,9 @@ public class AdmissionController : ControllerBase
         var admission = await _context.StudentProfiles.FindAsync(id);
         if (admission == null) return NotFound();
 
-        // Preserve existing photo if no new one is uploaded
         if (photo != null)
         {
             admission.Photo = await ConvertFileToByteArray(photo);
-        }
-        else
-        {
-            model.Photo = admission.Photo;
         }
 
         _context.Entry(admission).CurrentValues.SetValues(model);
@@ -113,7 +121,6 @@ public class AdmissionController : ControllerBase
         return Ok(admission);
     }
 
-    // Get student photo
     [HttpGet("photo/{id}")]
     public async Task<IActionResult> GetPhoto(int id)
     {
@@ -123,7 +130,6 @@ public class AdmissionController : ControllerBase
         return File(admission.Photo, "image/jpeg");
     }
 
-    // Delete admission
     [HttpDelete("delete/{id}")]
     public async Task<IActionResult> DeleteAdmission(int id)
     {
@@ -136,7 +142,6 @@ public class AdmissionController : ControllerBase
         return Ok(new { message = "Admission deleted successfully" });
     }
 
-    // Helper method to convert IFormFile to byte array
     private async Task<byte[]?> ConvertFileToByteArray(IFormFile? file)
     {
         if (file == null) return null;
