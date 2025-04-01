@@ -5,8 +5,8 @@ import { useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("student@example.com");
+  const [password, setPassword] = useState("password123");
 
   async function handleLogin() {
     const res = await fetch("/api/login", {
@@ -33,12 +33,14 @@ export default function LoginPage() {
           <input
             type="email"
             placeholder="Email"
+            value="student@example.com"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
             placeholder="Password"
+            value="password123"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             onChange={(e) => setPassword(e.target.value)}
           />

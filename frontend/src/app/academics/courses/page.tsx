@@ -3,8 +3,15 @@ import Link from "next/link";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function CoursesPage() {
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
+
+  const toggleMenu = (menu: string) => {
+    setActiveMenu(activeMenu === menu ? null : menu);
+  };
+
   return (
     <div>
       <Navbar />
@@ -22,15 +29,17 @@ export default function CoursesPage() {
             <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
-              className="relative group"
+              className="relative"
             >
-              <Link
-                href="courses/"
+              <button
+                onClick={() => toggleMenu("postgraduate")}
                 className="block w-full text-center text-blue-600 px-6 py-4 rounded-lg font-semibold bg-green-100 hover:bg-green-200 transition-all duration-300 transform hover:shadow-lg"
               >
                 PostGraduate Courses
-              </Link>
-              <div className="absolute top-full left-0 bg-white shadow-xl rounded-md py-2 w-full z-10 hidden group-hover:block transition-all duration-300 transform opacity-0 group-hover:opacity-100">
+              </button>
+              <div
+                className={`absolute top-full left-0 bg-white shadow-xl rounded-md py-2 w-full z-10 ${activeMenu === "postgraduate" ? "block" : "hidden"} transition-all duration-300`}
+              >
                 <Link
                   href="courses/postgraduate/MCA"
                   className="block px-6 py-3 text-lg text-gray-800 hover:bg-blue-50 transition-all duration-300 hover:translate-x-2"
@@ -48,15 +57,17 @@ export default function CoursesPage() {
             <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
-              className="relative group"
+              className="relative"
             >
-              <Link
-                href="courses/"
+              <button
+                onClick={() => toggleMenu("undergraduate")}
                 className="block w-full text-center bg-green-100 text-blue-600 px-6 py-4 rounded-lg font-semibold hover:bg-green-200 transition-all duration-300 transform hover:shadow-lg"
               >
                 UnderGraduate Courses
-              </Link>
-              <div className="absolute top-full left-0 bg-white shadow-xl rounded-md py-2 w-full z-10 hidden group-hover:block transition-all duration-300 transform opacity-0 group-hover:opacity-100">
+              </button>
+              <div
+                className={`absolute top-full left-0 bg-white shadow-xl rounded-md py-2 w-full z-10 ${activeMenu === "undergraduate" ? "block" : "hidden"} transition-all duration-300`}
+              >
                 <Link
                   href="courses/undergraduate/BMS"
                   className="block px-6 py-3 text-lg text-gray-800 hover:bg-blue-50 transition-all duration-300 hover:translate-x-2"
@@ -68,15 +79,17 @@ export default function CoursesPage() {
             <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
-              className="relative group"
+              className="relative"
             >
-              <Link
-                href="courses/"
+              <button
+                onClick={() => toggleMenu("phd")}
                 className="block w-full text-center bg-green-100 text-blue-600 px-6 py-4 rounded-lg font-semibold hover:bg-green-200 transition-all duration-300 transform hover:shadow-lg"
               >
                 PhD
-              </Link>
-              <div className="absolute top-full left-0 bg-white shadow-xl rounded-md py-2 w-full z-10 hidden group-hover:block transition-all duration-300 transform opacity-0 group-hover:opacity-100">
+              </button>
+              <div
+                className={`absolute top-full left-0 bg-white shadow-xl rounded-md py-2 w-full z-10 ${activeMenu === "phd" ? "block" : "hidden"} transition-all duration-300`}
+              >
                 <Link
                   href="courses/other-courses/Phd"
                   className="block px-6 py-3 text-lg text-gray-800 hover:bg-blue-50 transition-all duration-300 hover:translate-x-2"

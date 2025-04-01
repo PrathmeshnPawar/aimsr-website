@@ -13,4 +13,10 @@ module.exports = {
   output: "standalone",
 };
 
+// next.config.js
+module.exports = {
+  // ...
+  allowedDevOrigins: ["http://192.168.1.10:3000", "http://191.168.0.113:3000"], //Add your phone's IP address here.
+};
+
 export default nextConfig;

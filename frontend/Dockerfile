@@ -5,6 +5,7 @@ WORKDIR /app
 # Copy package files and install dependencies
 COPY package.json package-lock.json ./
 RUN npm install
+RUN npm install nodemon --save-dev
 
 # Copy the rest of the app
 COPY . .
@@ -20,10 +21,10 @@ WORKDIR /app
 COPY --from=build /app ./
 
 # Set the environment to production
-ENV NODE_ENV=production
+
 
 # Expose the port Next.js runs on
 EXPOSE 3000
 
-# Start the app
-CMD ["npm", "run", "dev", "--", "-H", "0.0.0.0"]
+# Start the app with nodemon
+CMD ["npx", "nodemon", "npm", "run", "dev", "--", "-H", "0.0.0.0"]
