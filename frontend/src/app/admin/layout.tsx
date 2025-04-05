@@ -9,18 +9,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       <header>
         <nav>
           <ul>
-            <li className="mb-4">
-              {/* Removed the <a> tag here */}
-              <Link href="/admin/dashboard" className="text-lg hover:underline">
-                Dashboard
-              </Link>
-            </li>
-            <li className="mb-4">
-              {/* Removed the <a> tag here */}
-              <Link href="/admin/login" className="text-lg hover:underline">
-                Login
-              </Link>
-            </li>
+            <li className="mb-4">{/* Removed the <a> tag here */}</li>
           </ul>
         </nav>
       </header>

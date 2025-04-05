@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using backend.Models;
 using backend.Data;
+using Microsoft.AspNetCore.Authorization;
 
 [Route("api/auth")]
 [ApiController]
@@ -23,14 +24,17 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterModel model)
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Register([FromBody] StudentProfile model)
     {
         var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName };
         var result = await _userManager.CreateAsync(user, model.Password);
         if (!result.Succeeded)
             return BadRequest(result.Errors);
 
-        return Ok(new { message = "User registered successfully" });
+        await _userManager.AddToRoleAsync(user, "Student");
+
+        return Ok(new { message = "Student registered successfully by admin" });
     }
 
     [HttpPost("login")]
@@ -44,16 +48,22 @@ public class AuthController : ControllerBase
         return Ok(new { token });
     }
 
-    private string GenerateJwtToken(ApplicationUser user)
+    private async Task<string> GenerateJwtToken(ApplicationUser user)
     {
+        var userRoles = await _userManager.GetRolesAsync(user);
 
-        var claims = new[]
+        var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id ?? string.Empty),
             new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
+        // Add role claims
+        foreach (var role in userRoles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
 
         var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? "default_secret_key");
         var securityKey = new SymmetricSecurityKey(key);
