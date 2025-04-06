@@ -25,16 +25,31 @@ public class AuthController : ControllerBase
 
     [HttpPost("register")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Register([FromBody] StudentProfile model)
+    public async Task<IActionResult> Register([FromBody] RegisterModel model)
     {
-        var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName };
+        var user = new ApplicationUser
+        {
+            UserName = model.Email,
+            Email = model.Email,
+            FullName = model.FullName
+        };
+
         var result = await _userManager.CreateAsync(user, model.Password);
         if (!result.Succeeded)
             return BadRequest(result.Errors);
 
         await _userManager.AddToRoleAsync(user, "Student");
 
-        return Ok(new { message = "Student registered successfully by admin" });
+        // Create corresponding StudentProfile
+        var studentProfile = new StudentProfile
+        {
+            Email = model.Email,
+            FullName = model.FullName,
+            DateOfBirth = model.DateOfBirth
+        };
+
+
+        return Ok(new { message = "Student registered successfully by admin", profile = studentProfile });
     }
 
     [HttpPost("login")]

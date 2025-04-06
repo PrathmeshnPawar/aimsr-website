@@ -38,7 +38,7 @@ const Navbar = () => {
             >
               <Link
                 href="/"
-                className="flex font-mono font-bold tracking-wider text-white text-3xl hover:text-blue-200 transition-all duration-300 transform hover:scale-105"
+                className="flex font-mono font-bold tracking-wider text-yellow-300 text-3xl hover:text-yellow-200 transition-all duration-300 transform hover:scale-105"
               >
                 <Image
                   src="/logo.png"
@@ -105,8 +105,10 @@ const Navbar = () => {
               <div className="relative group">
                 <Link
                   href="/#"
-                  className={`text-white text-xl font-semibold hover:text-blue-200 transition-all duration-300 transform hover:scale-105 flex items-center gap-1 ${
-                    activeSection === "about" ? "border-b-2 border-white" : ""
+                  className={`text-yellow-300 text-xl font-semibold hover:text-yellow-200 transition-all duration-300 transform hover:scale-105 flex items-center gap-1 ${
+                    activeSection === "about"
+                      ? "border-b-2 border-yellow-300"
+                      : ""
                   }`}
                   onClick={() => setActiveSection("about")}
                 >
@@ -154,9 +156,9 @@ const Navbar = () => {
               <div className="relative group">
                 <Link
                   href="/academics"
-                  className={`text-white text-xl font-semibold hover:text-blue-200 transition-all duration-300 transform hover:scale-105 flex items-center gap-1 ${
+                  className={`text-yellow-300 text-xl font-semibold hover:text-yellow-200 transition-all duration-300 transform hover:scale-105 flex items-center gap-1 ${
                     activeSection === "academics"
-                      ? "border-b-2 border-white"
+                      ? "border-b-2 border-yellow-300"
                       : ""
                   }`}
                   onClick={() => setActiveSection("academics")}
@@ -204,9 +206,9 @@ const Navbar = () => {
               </div>
               <Link
                 href="/placements"
-                className={`text-white text-xl font-semibold hover:text-blue-200 transition-all duration-300 transform hover:scale-105 ${
+                className={`text-yellow-300 text-xl font-semibold hover:text-yellow-200 transition-all duration-300 transform hover:scale-105 ${
                   activeSection === "placements"
-                    ? "border-b-2 border-white"
+                    ? "border-b-2 border-yellow-300"
                     : ""
                 }`}
                 onClick={() => setActiveSection("placements")}
@@ -219,7 +221,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <motion.button
             onClick={toggleMobileMenu}
-            className="md:hidden fixed right-4 top-6 text-white p-2 hover:text-blue-200 transition-all duration-300 z-50 bg-blue-800/50 backdrop-blur-sm rounded-lg"
+            className="md:hidden fixed right-4 top-6 text-yellow-300 p-2 hover:text-yellow-200 transition-all duration-300 z-50 bg-blue-800/50 backdrop-blur-sm rounded-lg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             whileHover={{ scale: 1.1 }}

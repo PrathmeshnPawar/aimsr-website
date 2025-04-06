@@ -33,22 +33,26 @@ namespace backend.Controllers
         [HttpPost("students/register")]
         public async Task<IActionResult> RegisterStudent([FromBody] RegisterModel model)
         {
-            if (string.IsNullOrEmpty(model.FullName) || string.IsNullOrEmpty(model.Email))
+            if (string.IsNullOrEmpty(model.FullName) || string.IsNullOrEmpty(model.Email) ||
+                string.IsNullOrEmpty(model.Password) || string.IsNullOrEmpty(model.MobileNumber))
             {
-                return BadRequest("Name and email are required");
+                return BadRequest("All required fields must be filled");
             }
 
+            // Inside RegisterStudent:
             var student = new StudentProfile
             {
-                Name = model.FullName,
+                FullName = model.FullName, // Changed from Name to FullName
                 Email = model.Email
             };
+
 
             _context.StudentProfiles.Add(student);
             await _context.SaveChangesAsync();
 
             model.StudentProfileId = student.StudentId;
             model.StudentProfile = student;
+            model.IsApproved = false;
             _context.RegisterModels.Add(model);
             await _context.SaveChangesAsync();
 
@@ -58,9 +62,11 @@ namespace backend.Controllers
         [HttpGet("students")]
         public async Task<IActionResult> GetStudents()
         {
+            // Inside GetStudents:
             var students = await _context.StudentProfiles
-                .Select(s => new { s.StudentId, s.Name, s.Email }) // Return only required fields
+                .Select(s => new { s.StudentId, s.FullName, s.Email }) // Changed s.Name to s.FullName
                 .ToListAsync();
+
             return Ok(students);
         }
 
@@ -69,7 +75,8 @@ namespace backend.Controllers
         {
             var student = await _context.StudentProfiles.FindAsync(id);
             if (student == null) return NotFound();
-            return Ok(new { student.StudentId, student.Name, student.Email, student.Photo });
+            // Inside GetStudent:
+            return Ok(new { student.StudentId, student.FullName, student.Email, student.Photo }); // Changed student.Name
         }
 
         [HttpPut("students/{id}")]
@@ -82,7 +89,8 @@ namespace backend.Controllers
             var student = await _context.StudentProfiles.FindAsync(id);
             if (student == null) return NotFound();
 
-            student.Name = name ?? student.Name;
+            // Inside UpdateStudent:
+            student.FullName = name ?? student.FullName; // Changed student.Name to student.FullName
             student.Email = email ?? student.Email;
 
             if (photo != null)
