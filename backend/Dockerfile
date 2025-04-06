@@ -4,6 +4,7 @@ WORKDIR /app
 
 # Copy the project file and restore dependencies
 COPY backend.csproj ./
+COPY aspnetcore-https.pfx ./
 RUN dotnet restore
 
 # Copy the rest of the application
