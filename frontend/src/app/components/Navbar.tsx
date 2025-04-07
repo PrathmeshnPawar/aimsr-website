@@ -28,7 +28,7 @@ const Navbar = () => {
   return (
     <nav className="bg-gradient 0 via-blue-700 to-blue-500 shadow-2xl sticky top-0 z-50">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-20 relative">
+        <div className="flex justify-between items-center h-24 relative">
           <AnimatePresence>
             <motion.div
               className="flex items-center z-50"
@@ -233,7 +233,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <motion.button
             onClick={toggleMobileMenu}
-            className="md:hidden fixed right-4 top-6 text-yellow-300 p-2 hover:text-yellow-200 transition-all duration-300 z-50 bg-blue-800/50 backdrop-blur-sm rounded-lg"
+            className="md:hidden fixed right-4 top-8 text-yellow-300 p-2 hover:text-yellow-200 transition-all duration-300 z-50 bg-blue-800/50 backdrop-blur-sm rounded-lg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             whileHover={{ scale: 1.1 }}
