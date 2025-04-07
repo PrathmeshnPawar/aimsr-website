@@ -5,19 +5,52 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
+import Image from "next/image";
 
 export default function HomePage() {
   const [showEnquiry, setShowEnquiry] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [submitting, setSubmitting] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({
+  interface Slide {
+    src: string;
+    width: number;
+    height: number;
+  }
+
+  const slides: Slide[] = [
+    {
+      src: "/award_up.png",
+      width: 1920,
+      height: 1080,
+    },
+    {
+      src: "/building_up.png",
+      width: 1920,
+      height: 1080,
+    },
+    {
+      src: "/grp.jpeg",
+      width: 1920,
+      height: 1275,
+    },
+    {
+      src: "/campus.jpg",
+      width: 1920,
+      height: 1280,
+    },
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 3000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       fullName: "",
       email: "",
@@ -26,13 +59,9 @@ export default function HomePage() {
     },
   });
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
   const onSubmit = async (data: any) => {
     setSubmitting(true);
-
+    console.log("submitted by apply button");
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/contactform`,
@@ -49,6 +78,8 @@ export default function HomePage() {
         alert("Form submitted successfully!");
         reset();
         setShowEnquiry(false);
+        setShowSuccessToast(true);
+        setTimeout(() => setShowSuccessToast(false), 3000); // Toast disappears after 3 sec
       } else {
         alert("Failed to submit form. Please try again.");
       }
@@ -60,47 +91,44 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col text-lg">
+      {" "}
+      {/* Increased base font size */}
       <Navbar />
-
-      {/* Hero Section */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        className="h-[80vh] flex items-center justify-center text-white text-center relative overflow-hidden"
-        style={{
-          backgroundImage: "url('/campus.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 backdrop-blur-sm bg-black/20"></div>
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-          className="flex flex-col items-center space-y-6 relative z-10 px-4"
-        >
-          <h2 className="text-4xl md:text-7xl font-bold text-blue-600 text-center text-shadow backdrop-blur-sm bg-white/30 p-4 rounded-lg">
-            Welcome to AIMSR
-          </h2>
-          <p className="text-lg md:text-xl text-center max-w-2xl text-shadow text-blue-600 backdrop-blur-sm bg-white/30 p-3 rounded-lg">
-            Ranked 4th amongst top private B-Schools in Mumbai - Times B-School
-            Survey 2024
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowEnquiry(true)}
-            className="mt-4 inline-block bg-white text-blue-600 px-6 md:px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-blue-50 transition duration-300"
+      <div className="relative h-[80vh] overflow-hidden">
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0"
           >
-            Apply Now
-          </motion.button>
-        </motion.div>
-      </motion.section>
+            <Image
+              src={slides[currentSlide].src}
+              alt="Campus slide"
+              width={slides[currentSlide].width}
+              height={slides[currentSlide].height}
+              style={{ objectFit: "cover" }}
+              className="h-full w-full"
+            />
+            <div className="absolute inset-0 bg-black/20"></div>
+          </motion.div>
+        </AnimatePresence>
 
-      {/* Enquiry Form Modal */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-colors duration-200 ${
+                currentSlide === index ? "bg-white" : "bg-white/50"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
       <AnimatePresence>
         {showEnquiry && (
           <motion.div
@@ -115,7 +143,7 @@ export default function HomePage() {
               exit={{ scale: 0.9, y: 20 }}
               className="bg-white p-4 md:p-8 rounded-xl shadow-2xl w-full max-w-md"
             >
-              <h3 className="text-xl md:text-2xl font-bold text-blue-600 mb-6">
+              <h3 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">
                 Enquiry Form
               </h3>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -123,24 +151,24 @@ export default function HomePage() {
                   type="text"
                   {...register("fullName", { required: true })}
                   placeholder="Full Name"
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition text-lg"
                 />
                 <input
                   type="email"
                   {...register("email", { required: true })}
                   placeholder="Email"
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition text-lg"
                 />
                 <input
                   type="tel"
                   {...register("phone", { required: true })}
                   placeholder="Phone"
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition text-lg"
                 />
                 <textarea
                   {...register("message", { required: true })}
                   placeholder="Message"
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition text-lg"
                   rows={4}
                 ></textarea>
                 <div className="flex justify-end space-x-3">
@@ -149,7 +177,7 @@ export default function HomePage() {
                     whileTap={{ scale: 0.95 }}
                     type="button"
                     onClick={() => setShowEnquiry(false)}
-                    className="px-4 md:px-5 py-2 text-gray-600 hover:text-gray-800"
+                    className="px-4 md:px-5 py-2 text-gray-600 hover:text-gray-800 text-lg"
                   >
                     Cancel
                   </motion.button>
@@ -158,7 +186,7 @@ export default function HomePage() {
                     whileTap={{ scale: 0.95 }}
                     type="submit"
                     disabled={submitting}
-                    className="px-4 md:px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md disabled:opacity-50"
+                    className="px-4 md:px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md disabled:opacity-50 text-lg"
                   >
                     {submitting ? "Submitting..." : "Submit"}
                   </motion.button>
@@ -168,22 +196,18 @@ export default function HomePage() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Notification */}
       <AnimatePresence>
-        {showNotification && (
+        {showSuccessToast && (
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className="fixed bottom-4 right-4 bg-green-500 text-white px-4 md:px-6 py-3 rounded-lg shadow-lg text-sm md:text-base"
+            className="fixed bottom-4 right-4 bg-green-500 text-white px-4 md:px-6 py-3 rounded-lg shadow-lg text-lg z-50"
           >
             Form submitted successfully!
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* About Section */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -193,10 +217,10 @@ export default function HomePage() {
       >
         <div className="max-w-6xl mx-auto">
           <div className="bg-white p-6 md:p-10 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <h3 className="text-2xl md:text-3xl font-bold text-blue-600 mb-4 md:mb-6">
+            <h3 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4 md:mb-6">
               About Us
             </h3>
-            <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+            <p className="text-gray-700 leading-relaxed text-lg md:text-xl mb-8">
               There is an extraordinary appetite for leaders anticipating the
               leadership needs of being with purpose & resilience to change in
               the VUCA world. Aditya Institute of Management Studies and
@@ -211,12 +235,36 @@ export default function HomePage() {
               the Institute's commitment towards promoting quality in
               teaching-learning, research, consultancy and student development.
             </p>
+
+            <div className="grid md:grid-cols-2 gap-6 mt-8">
+              <div className="bg-blue-50 p-6 rounded-lg">
+                <h4 className="text-2xl font-bold text-blue-600 mb-3">
+                  Our Vision
+                </h4>
+                <p className="text-gray-700 text-lg">
+                  To be globally recognized as an epitome of learning and
+                  innovation, imparting multifaceted management education driven
+                  by social sensitivity and supported by state of art
+                  infrastructure.
+                </p>
+              </div>
+
+              <div className="bg-blue-50 p-6 rounded-lg">
+                <h4 className="text-2xl font-bold text-blue-600 mb-3">
+                  Our Mission
+                </h4>
+                <p className="text-gray-700 text-lg">
+                  To impart quality education that encourages students to be
+                  competent enough for best-fit job roles. To provide faculty
+                  members with facilities to research, experiment and implement
+                  contemporary learning tools.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </motion.section>
-
-      {/* Vision & Mission Section */}
-      <motion.section
+      {/* <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -228,10 +276,10 @@ export default function HomePage() {
             whileHover={{ scale: 1.02 }}
             className="bg-white p-6 md:p-10 rounded-xl shadow-lg transition-all duration-300"
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-blue-600 mb-4 md:mb-6">
+            <h3 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4 md:mb-6">
               Vision
             </h3>
-            <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+            <p className="text-gray-700 leading-relaxed text-lg md:text-xl">
               To be globally recognized as an epitome of learning and
               innovation, imparting multifaceted management education driven by
               social sensitivity and supported by state of art infrastructure.
@@ -241,10 +289,10 @@ export default function HomePage() {
             whileHover={{ scale: 1.02 }}
             className="bg-white p-6 md:p-10 rounded-xl shadow-lg transition-all duration-300"
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-blue-600 mb-4 md:mb-6">
+            <h3 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4 md:mb-6">
               Mission
             </h3>
-            <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+            <p className="text-gray-700 leading-relaxed text-lg md:text-xl">
               To impart quality education that encourages students to be
               competent enough for best-fit job roles. To provide faculty
               members with facilities to research, experiment and implement
@@ -252,8 +300,238 @@ export default function HomePage() {
             </p>
           </motion.div>
         </div>
-      </motion.section>
+      </motion.section> */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="py-12 md:py-20 px-4 bg-gray-50"
+      >
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 className="text-3xl md:text-4xl font-bold text-blue-600 mb-8 text-center">
+              Upcoming Events
+            </h3>
+            <div className="grid gap-6">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="bg-white p-6 rounded-xl shadow-lg"
+              >
+                <div className="text-blue-600 font-bold mb-2 text-xl">
+                  MAR 15, 2024
+                </div>
+                <h4 className="text-2xl font-semibold mb-2">
+                  Annual Business Summit
+                </h4>
+                <p className="text-gray-600 text-lg">
+                  Join industry leaders and experts for our annual business
+                  conference.
+                </p>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="bg-white p-6 rounded-xl shadow-lg"
+              >
+                <div className="text-blue-600 font-bold mb-2 text-xl">
+                  APR 20, 2024
+                </div>
+                <h4 className="text-2xl font-semibold mb-2">
+                  Leadership Workshop
+                </h4>
+                <p className="text-gray-600 text-lg">
+                  Interactive session on developing essential leadership skills.
+                </p>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="bg-white p-6 rounded-xl shadow-lg"
+              >
+                <div className="text-blue-600 font-bold mb-2 text-xl">
+                  MAY 10, 2024
+                </div>
+                <h4 className="text-2xl font-semibold mb-2">
+                  Career Fair 2024
+                </h4>
+                <p className="text-gray-600 text-lg">
+                  Connect with top companies and explore career opportunities.
+                </p>
+              </motion.div>
+            </div>
+          </div>
 
+          <div>
+            <h3 className="text-3xl md:text-4xl font-bold text-blue-600 mb-8 text-center">
+              Latest News
+            </h3>
+            <div className="grid gap-4">
+              <motion.div
+                whileHover={{ scale: 1.01 }}
+                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+              >
+                <Link
+                  href="#"
+                  className="text-blue-600 hover:text-blue-800 font-medium text-lg"
+                >
+                  General Merit list of 1st year BMS course for the AY 2024-25
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.01 }}
+                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+              >
+                <Link
+                  href="#"
+                  className="text-blue-600 hover:text-blue-800 font-medium text-lg"
+                >
+                  Admission Notice - 2024-25 from ARA
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.01 }}
+                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+              >
+                <Link
+                  href="#"
+                  className="text-blue-600 hover:text-blue-800 font-medium text-lg"
+                >
+                  MCA Admission Notification-2 A.Y. 2024-25
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.01 }}
+                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+              >
+                <Link
+                  href="#"
+                  className="text-blue-600 hover:text-blue-800 font-medium text-lg"
+                >
+                  MMS Admission Notification-2 A.Y. 2024-25
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.01 }}
+                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+              >
+                <Link
+                  href="#"
+                  className="text-blue-600 hover:text-blue-800 font-medium text-lg"
+                >
+                  ACAP MMS enquiry details for the year 2024-26
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.01 }}
+                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+              >
+                <Link
+                  href="#"
+                  className="text-blue-600 hover:text-blue-800 font-medium text-lg"
+                >
+                  Institute level Merit List for the of 1st year BMS course for
+                  the AY 2024-25
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </motion.section>
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="py-12 md:py-20 px-4 bg-white"
+      >
+        <div className="max-w-6xl mx-auto">
+          <h3 className="text-3xl md:text-4xl font-bold text-blue-600 mb-8 text-center">
+            Our Programs
+          </h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-blue-50 p-6 rounded-xl shadow-lg"
+            >
+              <Image
+                src="/mms.jpeg"
+                alt="MMS Program"
+                width={300}
+                height={200}
+                className="w-full h-40 object-cover rounded-lg mb-4"
+              />
+              <h4 className="text-2xl font-bold text-blue-600 mb-3">MMS</h4>
+              <p className="text-gray-700 text-lg">
+                Master of Management Studies
+              </p>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-blue-50 p-6 rounded-xl shadow-lg"
+            >
+              <Image
+                src="/mca.jpeg"
+                alt="MCA Program"
+                width={300}
+                height={200}
+                className="w-full h-40 object-cover rounded-lg mb-4"
+              />
+              <h4 className="text-2xl font-bold text-blue-600 mb-3">MCA</h4>
+              <p className="text-gray-700 text-lg">
+                Master of Computer Applications
+              </p>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-blue-50 p-6 rounded-xl shadow-lg"
+            >
+              <Image
+                src="/bms.jpeg"
+                alt="BMS Program"
+                width={300}
+                height={200}
+                className="w-full h-40 object-cover rounded-lg mb-4"
+              />
+              <h4 className="text-2xl font-bold text-blue-600 mb-3">BMS</h4>
+              <p className="text-gray-700 text-lg">
+                Bachelor of Management Studies
+              </p>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-blue-50 p-6 rounded-xl shadow-lg"
+            >
+              <Image
+                src="/phd.jpeg"
+                alt="PhD Program"
+                width={300}
+                height={200}
+                className="w-full h-40 object-cover rounded-lg mb-4"
+              />
+              <h4 className="text-2xl font-bold text-blue-600 mb-3">PhD</h4>
+              <p className="text-gray-700 text-lg">Doctoral Program</p>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+        className="py-12 text-center"
+      >
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => {
+            reset(); // 👈 ADD THIS
+            setShowEnquiry(true);
+          }}
+          type="button"
+          className="inline-block bg-blue-600 text-white px-6 md:px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition duration-300 text-xl"
+        >
+          Apply Now
+        </motion.button>
+      </motion.div>
       <Footer />
     </div>
   );

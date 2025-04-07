@@ -2,7 +2,7 @@
 
 export default function Footer() {
   return (
-    <footer className="bg-blue-600 text-white py-8">
+    <footer className="text-white py-8" style={{ backgroundColor: "#066c9d" }}>
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <h3 className="font-bold text-lg mb-4">Navigation</h3>

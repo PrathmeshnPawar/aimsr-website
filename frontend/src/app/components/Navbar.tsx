@@ -105,9 +105,9 @@ const Navbar = () => {
               <div className="relative group">
                 <Link
                   href="/#"
-                  className={`text-yellow-300 text-xl font-semibold hover:text-yellow-200 transition-all duration-300 transform hover:scale-105 flex items-center gap-1 ${
+                  className={`text-blue-800 text-xl font-semibold hover:text-blue-900 transition-all duration-300 transform hover:scale-105 flex items-center gap-1 ${
                     activeSection === "about"
-                      ? "border-b-2 border-yellow-300"
+                      ? "border-b-2 border-blue-800"
                       : ""
                   }`}
                   onClick={() => setActiveSection("about")}
@@ -156,9 +156,9 @@ const Navbar = () => {
               <div className="relative group">
                 <Link
                   href="/academics"
-                  className={`text-yellow-300 text-xl font-semibold hover:text-yellow-200 transition-all duration-300 transform hover:scale-105 flex items-center gap-1 ${
+                  className={`text-blue-800 text-xl font-semibold hover:text-blue-900 transition-all duration-300 transform hover:scale-105 flex items-center gap-1 ${
                     activeSection === "academics"
-                      ? "border-b-2 border-yellow-300"
+                      ? "border-b-2 border-blue-800"
                       : ""
                   }`}
                   onClick={() => setActiveSection("academics")}
@@ -191,6 +191,18 @@ const Navbar = () => {
                     Courses
                   </Link>
                   <Link
+                    href="/academics/mca"
+                    className="block px-6 py-3 text-lg text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-all duration-300 rounded-md mx-2"
+                  >
+                    Master of Computer Applications (MCA)
+                  </Link>
+                  <Link
+                    href="/academics/mms"
+                    className="block px-6 py-3 text-lg text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-all duration-300 rounded-md mx-2"
+                  >
+                    Master of Management Studies (MMS)
+                  </Link>
+                  <Link
                     href="/academics/fee-structure"
                     className="block px-6 py-3 text-lg text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-all duration-300 rounded-md mx-2"
                   >
@@ -206,9 +218,9 @@ const Navbar = () => {
               </div>
               <Link
                 href="/placements"
-                className={`text-yellow-300 text-xl font-semibold hover:text-yellow-200 transition-all duration-300 transform hover:scale-105 ${
+                className={`text-blue-800 text-xl font-semibold hover:text-blue-900 transition-all duration-300 transform hover:scale-105 ${
                   activeSection === "placements"
-                    ? "border-b-2 border-yellow-300"
+                    ? "border-b-2 border-blue-800"
                     : ""
                 }`}
                 onClick={() => setActiveSection("placements")}
