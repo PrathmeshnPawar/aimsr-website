@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import Footer from "@/app/components/Footer";
 import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 
-const MMS = () => {
+const PhD = () => {
   return (
     <>
       <Navbar />
@@ -20,7 +20,7 @@ const MMS = () => {
             animate={{ y: 0 }}
             className="text-6xl font-bold text-center text-blue-900 mb-4"
           >
-            Master of Management Studies (MMS)
+            Ph.D. in Management Studies
           </motion.h1>
 
           <motion.h2
@@ -41,13 +41,10 @@ const MMS = () => {
               About the Program
             </h2>
             <p className="text-blue-900 text-xl">
-              One of the best MMS colleges in Mumbai, Aditya Institute of
-              Management Studies & Research (AIMSR) is proud to announce the
-              opening of admissions for the Master of Management Studies (MMS)
-              program. The MMS course at AIMSR is a 2 year Full-time Course
-              affiliated to University of Mumbai and approved by DTE, Govt. of
-              Maharashtra (DTE Code: MB-3438). After completion, students
-              receive an MMS degree from the University of Mumbai.
+              Aditya Institute of Management Studies and Research (AIMSR) is a
+              recognized Ph.D. Centre of University of Mumbai. Students
+              interested in pursuing Ph.D. in management studies can register
+              for this programme with a duration ranging from 3-6 years.
             </p>
           </motion.div>
 
@@ -63,45 +60,34 @@ const MMS = () => {
               </h3>
               <div className="text-blue-900 text-lg">
                 <p className="mb-4">
-                  Passed minimum three-year duration bachelor's degree awarded
-                  by any of the universities recognised by University Grants
-                  Commission or Association of Indian Universities in any
-                  discipline with:
+                  Candidates must have a Master's degree or equivalent
+                  professional degree with:
                 </p>
                 <ul className="list-disc pl-5 mb-4">
-                  <li>At least 50% marks in aggregate or equivalent</li>
                   <li>
-                    At least 45% for backward class categories and persons with
-                    disability (Maharashtra State only)
+                    At least 55% marks in aggregate or equivalent grade 'B' in
+                    UGC 7-point scale
                   </li>
                   <li>
-                    Valid scores in CAT, CET & CMAT (for academic year 2024)
+                    Foreign degree holders must have accreditation from approved
+                    assessment agencies
                   </li>
+                  <li>Must clear PET conducted by University of Mumbai OR</li>
+                  <li>Must have cleared UGC-NET/UGC-CSIR NET/SLET/GATE</li>
                 </ul>
-                <p className="text-base italic">
-                  Note: Final year students may apply subject to meeting minimum
-                  marks requirement before the admission cut-off date.
-                </p>
               </div>
             </div>
 
             <div className="bg-white rounded-lg shadow-lg p-6">
               <h3 className="text-3xl font-semibold mb-4 text-blue-900">
-                Program Outcomes
+                Program Structure
               </h3>
               <ul className="list-disc pl-5 text-blue-900 text-lg">
-                <li>
-                  Develop critical-thinking and analytical approach for
-                  managerial decision-making
-                </li>
-                <li>
-                  Understand socio-cultural & economic aspects of business
-                  management
-                </li>
-                <li>Adapt to changing global business environment</li>
-                <li>
-                  Develop as managers, entrepreneurs & ethical business leaders
-                </li>
+                <li>Duration: 3-6 years including coursework</li>
+                <li>Intake: 10 seats</li>
+                <li>Mandatory coursework (6 months)</li>
+                <li>Research proposal submission</li>
+                <li>Thesis submission and defense</li>
               </ul>
             </div>
           </motion.div>
@@ -113,52 +99,44 @@ const MMS = () => {
             className="mt-8 bg-white rounded-lg shadow-lg p-6"
           >
             <h2 className="text-4xl font-semibold mb-6 text-blue-900">
-              Program Highlights
+              Additional Information
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <h3 className="text-2xl font-semibold mb-3 text-blue-900">
-                  Pedagogy Features
+                  Required Documents
                 </h3>
                 <ul className="list-disc pl-5 text-blue-900 text-lg">
-                  <li>Intensive, interactive learning experience</li>
-                  <li>Case studies based on real-life situations</li>
-                  <li>Industry-connected curriculum</li>
-                  <li>
-                    Experienced faculty with research & consulting expertise
-                  </li>
-                  <li>Digital marketing & NISM certification courses</li>
-                  <li>Incubation & Entrepreneurship cell (E-Cell)</li>
+                  <li>Academic transcripts and certificates</li>
+                  <li>PET/NET/GATE clearance proof</li>
+                  <li>Employer NOC (if applicable)</li>
+                  <li>Research proposal</li>
+                  <li>Identity and address proof</li>
+                  <li>Category certificates (if applicable)</li>
                 </ul>
               </div>
               <div>
                 <h3 className="text-2xl font-semibold mb-3 text-blue-900">
-                  Recent Accolades
+                  Course Work Details
                 </h3>
                 <div className="space-y-3 text-blue-900 text-lg">
                   <motion.div
                     whileHover={{ scale: 1.02 }}
                     className="p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
                   >
-                    Ranked 35th among top Private B-Schools in India (2024)
+                    Mandatory for all except M.Phil holders
                   </motion.div>
                   <motion.div
                     whileHover={{ scale: 1.02 }}
                     className="p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
                   >
-                    Ranked 4th among top Private B-Schools in Mumbai (2024)
+                    6 months duration
                   </motion.div>
                   <motion.div
                     whileHover={{ scale: 1.02 }}
                     className="p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
                   >
-                    Ranked 37th among top Private B-Schools in India (2023)
-                  </motion.div>
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
-                  >
-                    Best Emerging Management Institute by ET NOW (2018)
+                    Research methodology training
                   </motion.div>
                 </div>
               </div>
@@ -171,4 +149,4 @@ const MMS = () => {
   );
 };
 
-export default MMS;
+export default PhD;

@@ -32,7 +32,7 @@ export default function Admissions() {
               transition={{ duration: 0.5 }}
               className="text-5xl font-bold"
             >
-              Admissions at AIMSR
+              Ph.D in Management Studies
             </motion.h1>
             <motion.p
               initial={{ y: 20, opacity: 0 }}
@@ -40,17 +40,35 @@ export default function Admissions() {
               transition={{ delay: 0.2 }}
               className="mt-4 text-xl"
             >
-              Join us and take the next step toward a bright future.
+              Join our recognized Ph.D. Centre of University of Mumbai
             </motion.p>
             <motion.a
               whileHover={{ scale: 1.1, backgroundColor: "#fff" }}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400 }}
-              href="/courses/postgraduate/MCA"
+              href="/apply"
               className="mt-6 inline-block px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold shadow-md hover:bg-gray-100"
             >
               Apply Now
             </motion.a>
+          </motion.section>
+
+          {/* Program Overview */}
+          <motion.section
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="py-16 px-8 max-w-6xl mx-auto"
+          >
+            <h2 className="text-3xl font-semibold">Program Overview</h2>
+            <div className="mt-6 space-y-4">
+              <p className="text-lg">
+                Duration: Minimum 3 years to maximum 6 years from the date of
+                admission including course work.
+              </p>
+              <p className="text-lg">Total Seats: 10</p>
+            </div>
           </motion.section>
 
           {/* Eligibility Criteria */}
@@ -62,36 +80,25 @@ export default function Admissions() {
             className="py-16 px-8 max-w-6xl mx-auto"
           >
             <h2 className="text-3xl font-semibold">Eligibility Criteria</h2>
-            <ul className="list-disc list-inside mt-6 space-y-4">
-              {[
-                {
-                  title: "Bachelor's Program",
-                  desc: "12th grade pass with minimum 50% marks",
-                },
-                {
-                  title: "Master's Program",
-                  desc: "Graduation with minimum 55% marks",
-                },
-                {
-                  title: "Entrance Exam",
-                  desc: "Required for specific programs",
-                },
-              ].map(({ title, desc }, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ x: -20, opacity: 0 }}
-                  whileInView={{ x: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.3 }}
-                  className="text-lg"
-                >
-                  <strong>{title}:</strong> {desc}
-                </motion.li>
-              ))}
-            </ul>
+            <div className="mt-6 prose prose-lg">
+              <p>Candidates must have:</p>
+              <ul className="list-disc list-inside space-y-4">
+                <li>
+                  Master's degree or equivalent professional degree with minimum
+                  55% marks in aggregate or B grade in UGC 7-point scale
+                </li>
+                <li>
+                  Cleared Ph.D. Entrance Test in Management (PET) conducted by
+                  University of Mumbai
+                  <strong>OR</strong>
+                  Cleared UGC-NET (including JRF)/UGC-CSIR NET (including
+                  JRF)/SLET/GATE/teacher fellowship holder
+                </li>
+              </ul>
+            </div>
           </motion.section>
 
-          {/* Application Process */}
+          {/* Course Work */}
           <motion.section
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -99,63 +106,22 @@ export default function Admissions() {
             transition={{ duration: 1 }}
             className="py-16 px-8 bg-white"
           >
-            <h2 className="text-3xl font-semibold max-w-6xl mx-auto">
-              Application Process
-            </h2>
-            <div className="mt-8 space-y-6 max-w-6xl mx-auto">
-              {[
-                "Fill out the online application form.",
-                "Upload required documents.",
-                "Appear for entrance test/interview.",
-                "Pay admission fees and confirm seat.",
-              ].map((step, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ x: -50, opacity: 0 }}
-                  whileInView={{ x: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.3 }}
-                  className="flex items-center bg-gray-50 p-6 rounded-lg shadow-sm"
-                >
-                  <span className="text-blue-600 text-3xl">
-                    {["📄", "📎", "📝", "💳"][index]}
-                  </span>
-                  <p className="ml-4 text-lg">
-                    <strong>Step {index + 1}:</strong> {step}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.section>
-
-          {/* Important Dates */}
-          <motion.section
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="py-16 px-8 max-w-6xl mx-auto"
-          >
-            <h2 className="text-3xl font-semibold">Important Dates</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-              {[
-                { date: "March 20", event: "Applications Open" },
-                { date: "April 15", event: "Early Bird Deadline" },
-                { date: "May 10", event: "Entrance Exam" },
-                { date: "June 1", event: "Final Admission Deadline" },
-              ].map(({ date, event }, index) => (
-                <motion.div
-                  key={index}
-                  whileHover={{ scale: 1.05, backgroundColor: "#EEF2FF" }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                  className="p-6 bg-white rounded-xl shadow-md text-center border border-gray-100"
-                >
-                  <h3 className="font-semibold text-blue-600 text-xl">
-                    {date}
-                  </h3>
-                  <p className="mt-2 text-gray-700">{event}</p>
-                </motion.div>
-              ))}
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-3xl font-semibold">Course Work</h2>
+              <div className="mt-6 space-y-4">
+                <p>
+                  Every candidate must undergo course work prescribed by the
+                  Board of Studies of Faculty in Management.
+                </p>
+                <ul className="list-disc list-inside space-y-3">
+                  <li>Duration: Minimum one semester (6 months)</li>
+                  <li>Course work is treated as pre-Ph.D. preparation</li>
+                  <li>
+                    M.Phil graduates from recognized universities may be
+                    exempted from course work
+                  </li>
+                </ul>
+              </div>
             </div>
           </motion.section>
 
@@ -168,13 +134,17 @@ export default function Admissions() {
             className="py-16 px-8 bg-white"
           >
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-semibold">Documents Required</h2>
+              <h2 className="text-3xl font-semibold">Required Documents</h2>
               <ul className="list-disc list-inside mt-6 space-y-4">
                 {[
-                  "10th & 12th mark sheets (PDF/JPG, max 2MB)",
-                  "Graduation certificate (if applicable)",
-                  "Passport-size photo",
-                  "Identity Proof (Aadhaar/Passport)",
+                  "Mark Sheets (all semesters) and Convocation Certificate of Bachelor's and Master's Degree",
+                  "PET clearance certificate or relevant eligibility certificates",
+                  "NOC from employer (if applicable)",
+                  "Proof of residential address",
+                  "Curriculum Vitae",
+                  "Character Certificate",
+                  "Migration Certificate (if applicable)",
+                  "Caste Certificate (if applicable)",
                 ].map((doc, index) => (
                   <motion.li
                     key={index}
@@ -191,7 +161,7 @@ export default function Admissions() {
             </div>
           </motion.section>
 
-          {/* Fee Structure */}
+          {/* Research Proposal */}
           <motion.section
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -199,41 +169,21 @@ export default function Admissions() {
             transition={{ duration: 1 }}
             className="py-16 px-8 max-w-6xl mx-auto"
           >
-            <h2 className="text-3xl font-semibold">Fee Structure</h2>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="mt-8 overflow-hidden rounded-xl shadow-lg"
-            >
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-blue-600 text-white">
-                    <th className="p-4 text-left">Program</th>
-                    <th className="p-4 text-left">Annual Fees</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { program: "BCA", fee: "₹80,000" },
-                    { program: "MCA", fee: "₹1,20,000" },
-                  ].map(({ program, fee }, index) => (
-                    <motion.tr
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.2 }}
-                      className="border-b border-gray-200 hover:bg-gray-50"
-                    >
-                      <td className="p-4">{program}</td>
-                      <td className="p-4">{fee}</td>
-                    </motion.tr>
-                  ))}
-                </tbody>
-              </table>
-            </motion.div>
+            <h2 className="text-3xl font-semibold">Research Proposal</h2>
+            <div className="mt-6 space-y-4">
+              <p className="text-lg">After admission, candidates must:</p>
+              <ul className="list-disc list-inside space-y-3">
+                <li>
+                  Submit research proposal in consultation with Research Guide
+                </li>
+                <li>
+                  Obtain approval from Research Recognition Committee (RRC)
+                </li>
+                <li>
+                  Complete P.G. Registration within 20 days of RRC approval
+                </li>
+              </ul>
+            </div>
           </motion.section>
 
           {/* Contact Section */}
@@ -254,7 +204,8 @@ export default function Admissions() {
                 className="mt-6 space-y-3"
               >
                 <p className="text-lg">
-                  For any admission-related queries, feel free to contact us.
+                  For any Ph.D. admission related queries, feel free to contact
+                  us.
                 </p>
                 <p className="text-xl">
                   <strong>Email:</strong> admissions@aimsr.edu

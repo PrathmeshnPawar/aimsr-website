@@ -26,7 +26,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-gradient 0 via-blue-700 to-blue-500 shadow-2xl sticky top-0 z-50">
+    <nav className="bg-gradient 0 via-blue-700 to-blue-500 shadow-2xl sticky top-0 z-50 backdrop-blur-md">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-24 relative">
           <AnimatePresence>
@@ -45,7 +45,7 @@ const Navbar = () => {
                   alt="AIMSR Logo"
                   width={140}
                   height={70}
-                  className="object-contain drop-shadow-lg hover:drop-shadow-2xl transition-all duration-300 bg-white/90 p-2 rounded-lg"
+                  className="object-contain drop-shadow-lg hover:drop-shadow-2xl transition-all duration-300 bg-white p-2 rounded-lg"
                   priority
                 />
               </Link>
@@ -63,14 +63,14 @@ const Navbar = () => {
               <div className="relative group">
                 <button
                   onClick={() => setIsLoginMenuOpen(!isLoginMenuOpen)}
-                  className="bg-white/90 text-blue-800 px-6 py-2 rounded-full font-semibold hover:bg-blue-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="bg-white text-blue-800 px-6 py-2 rounded-full font-semibold hover:bg-blue-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
                   Login
                 </button>
                 <AnimatePresence>
                   {isLoginMenuOpen && (
                     <motion.div
-                      className="absolute top-full right-0 mt-2 bg-white/95 backdrop-blur-sm shadow-2xl rounded-lg py-2 w-48 z-10"
+                      className="absolute top-full right-0 mt-2 bg-white backdrop-blur-md shadow-2xl rounded-lg py-2 w-48 z-10"
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
@@ -105,7 +105,7 @@ const Navbar = () => {
               <div className="relative group">
                 <Link
                   href="/#"
-                  className={`text-blue-800 text-xl font-semibold hover:text-blue-900 transition-all duration-300 transform hover:scale-105 flex items-center gap-1 ${
+                  className={`text-blue-800 text-lg font-semibold hover:text-blue-900 transition-all duration-300 transform hover:scale-105 flex items-center gap-1 ${
                     activeSection === "about"
                       ? "border-b-2 border-blue-800"
                       : ""
@@ -129,7 +129,7 @@ const Navbar = () => {
                   </motion.svg>
                 </Link>
                 <motion.div
-                  className="absolute top-full left-0 bg-white/95 backdrop-blur-sm shadow-2xl rounded-lg py-2 w-56 z-10 hidden group-hover:block"
+                  className="absolute top-full left-0 bg-white backdrop-blur-md shadow-2xl rounded-lg py-2 w-56 z-10 hidden group-hover:block"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
@@ -156,7 +156,7 @@ const Navbar = () => {
               <div className="relative group">
                 <Link
                   href="/academics"
-                  className={`text-blue-800 text-xl font-semibold hover:text-blue-900 transition-all duration-300 transform hover:scale-105 flex items-center gap-1 ${
+                  className={`text-blue-800 text-lg font-semibold hover:text-blue-900 transition-all duration-300 transform hover:scale-105 flex items-center gap-1 ${
                     activeSection === "academics"
                       ? "border-b-2 border-blue-800"
                       : ""
@@ -180,7 +180,7 @@ const Navbar = () => {
                   </motion.svg>
                 </Link>
                 <motion.div
-                  className="absolute top-full left-0 bg-white/95 backdrop-blur-sm shadow-2xl rounded-lg py-2 w-56 z-10 hidden group-hover:block"
+                  className="absolute top-full left-0 bg-white backdrop-blur-md shadow-2xl rounded-lg py-2 w-72 z-10 hidden group-hover:block"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
@@ -203,6 +203,18 @@ const Navbar = () => {
                     Master of Management Studies (MMS)
                   </Link>
                   <Link
+                    href="/academics/bms"
+                    className="block px-6 py-3 text-lg text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-all duration-300 rounded-md mx-2"
+                  >
+                    Bachelor of Management Studies (BMS)
+                  </Link>
+                  <Link
+                    href="/academics/phd"
+                    className="block px-6 py-3 text-lg text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-all duration-300 rounded-md mx-2"
+                  >
+                    Ph.D. in Management Studies (Ph.D)
+                  </Link>
+                  <Link
                     href="/academics/fee-structure"
                     className="block px-6 py-3 text-lg text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-all duration-300 rounded-md mx-2"
                   >
@@ -218,7 +230,7 @@ const Navbar = () => {
               </div>
               <Link
                 href="/placements"
-                className={`text-blue-800 text-xl font-semibold hover:text-blue-900 transition-all duration-300 transform hover:scale-105 ${
+                className={`text-blue-800 text-lg font-semibold hover:text-blue-900 transition-all duration-300 transform hover:scale-105 ${
                   activeSection === "placements"
                     ? "border-b-2 border-blue-800"
                     : ""
@@ -233,7 +245,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <motion.button
             onClick={toggleMobileMenu}
-            className="md:hidden fixed right-4 top-8 text-yellow-300 p-2 hover:text-yellow-200 transition-all duration-300 z-50 bg-blue-800/50 backdrop-blur-sm rounded-lg"
+            className="md:hidden fixed right-4 top-8 text-yellow-300 p-2 hover:text-yellow-200 transition-all duration-300 z-50 bg-blue-800 backdrop-blur-md rounded-lg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             whileHover={{ scale: 1.1 }}
@@ -262,7 +274,7 @@ const Navbar = () => {
           <AnimatePresence>
             {isMobileMenuOpen && (
               <motion.div
-                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+                className="fixed inset-0 bg-black backdrop-blur-md z-40"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -275,7 +287,7 @@ const Navbar = () => {
           <AnimatePresence>
             {isMobileMenuOpen && (
               <motion.div
-                className="fixed top-0 right-0 h-full w-[80%] bg-white/95 backdrop-blur-sm shadow-2xl z-50 overflow-y-auto"
+                className="fixed top-0 right-0 h-full w-[80%] bg-white backdrop-blur-md shadow-2xl z-50 overflow-y-auto"
                 initial={{ x: "100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
@@ -313,21 +325,21 @@ const Navbar = () => {
                         >
                           <Link
                             href="/about/differentiators@-AIMSR"
-                            className="block px-8 py-2 text-gray-600 hover:bg-blue-50"
+                            className="block px-8 py-2 text-lg text-gray-600 hover:bg-blue-50"
                             onClick={toggleMobileMenu}
                           >
                             Differentiators@ AIMSR
                           </Link>
                           <Link
                             href="/about/vision-mission"
-                            className="block px-8 py-2 text-gray-600 hover:bg-blue-50"
+                            className="block px-8 py-2 text-lg text-gray-600 hover:bg-blue-50"
                             onClick={toggleMobileMenu}
                           >
                             Vision & Mission
                           </Link>
                           <Link
                             href="/about/faculty"
-                            className="block px-8 py-2 text-gray-600 hover:bg-blue-50"
+                            className="block px-8 py-2 text-lg text-gray-600 hover:bg-blue-50"
                             onClick={toggleMobileMenu}
                           >
                             Faculty
@@ -370,21 +382,21 @@ const Navbar = () => {
                         >
                           <Link
                             href="/academics/courses"
-                            className="block px-8 py-2 text-gray-600 hover:bg-blue-50"
+                            className="block px-8 py-2 text-lg text-gray-600 hover:bg-blue-50"
                             onClick={toggleMobileMenu}
                           >
                             Courses
                           </Link>
                           <Link
                             href="/academics/fee-structure"
-                            className="block px-8 py-2 text-gray-600 hover:bg-blue-50"
+                            className="block px-8 py-2 text-lg text-gray-600 hover:bg-blue-50"
                             onClick={toggleMobileMenu}
                           >
                             Fee Structure
                           </Link>
                           <Link
                             href="/academics/admission-procedure"
-                            className="block px-8 py-2 text-gray-600 hover:bg-blue-50"
+                            className="block px-8 py-2 text-lg text-gray-600 hover:bg-blue-50"
                             onClick={toggleMobileMenu}
                           >
                             Admission Procedure

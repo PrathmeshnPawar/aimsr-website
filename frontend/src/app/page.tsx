@@ -15,32 +15,9 @@ export default function HomePage() {
 
   interface Slide {
     src: string;
-    width: number;
-    height: number;
   }
 
-  const slides: Slide[] = [
-    {
-      src: "/award_up.png",
-      width: 1920,
-      height: 1080,
-    },
-    {
-      src: "/building_up.png",
-      width: 1920,
-      height: 1080,
-    },
-    {
-      src: "/grp.jpeg",
-      width: 1920,
-      height: 1275,
-    },
-    {
-      src: "/campus.jpg",
-      width: 1920,
-      height: 1280,
-    },
-  ];
+  const slides: Slide[] = [{ src: "/grp_e.jpeg" }, { src: "/campus.jpg" }];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -79,7 +56,7 @@ export default function HomePage() {
         reset();
         setShowEnquiry(false);
         setShowSuccessToast(true);
-        setTimeout(() => setShowSuccessToast(false), 3000); // Toast disappears after 3 sec
+        setTimeout(() => setShowSuccessToast(false), 3000);
       } else {
         alert("Failed to submit form. Please try again.");
       }
@@ -91,9 +68,13 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col text-lg">
-      {" "}
-      {/* Increased base font size */}
+    <div className="min-h-screen flex flex-col text-lg bg-gradient-to-b from-blue-50 via-white to-blue-50">
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-5"></div>
+        <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-blue-100/30 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-blue-100/30 to-transparent"></div>
+      </div>
+
       <Navbar />
       <div className="relative h-[80vh] overflow-hidden">
         <AnimatePresence initial={false}>
@@ -108,12 +89,13 @@ export default function HomePage() {
             <Image
               src={slides[currentSlide].src}
               alt="Campus slide"
-              width={slides[currentSlide].width}
-              height={slides[currentSlide].height}
+              fill
               style={{ objectFit: "cover" }}
-              className="h-full w-full"
+              className="z-0"
+              priority
+              quality={100}
             />
-            <div className="absolute inset-0 bg-black/20"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/20"></div>
           </motion.div>
         </AnimatePresence>
 
@@ -129,6 +111,8 @@ export default function HomePage() {
           ))}
         </div>
       </div>
+
+      {/* Rest of the code remains exactly the same */}
       <AnimatePresence>
         {showEnquiry && (
           <motion.div
@@ -213,10 +197,10 @@ export default function HomePage() {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
-        className="py-12 md:py-20 px-4 bg-gray-50"
+        className="py-12 md:py-20 px-4 bg-gray-50/70 backdrop-blur-sm"
       >
         <div className="max-w-6xl mx-auto">
-          <div className="bg-white p-6 md:p-10 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div className="bg-white/90 backdrop-blur-sm p-6 md:p-10 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
             <h3 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4 md:mb-6">
               About Us
             </h3>
@@ -237,7 +221,7 @@ export default function HomePage() {
             </p>
 
             <div className="grid md:grid-cols-2 gap-6 mt-8">
-              <div className="bg-blue-50 p-6 rounded-lg">
+              <div className="bg-blue-50/80 backdrop-blur-sm p-6 rounded-lg">
                 <h4 className="text-2xl font-bold text-blue-600 mb-3">
                   Our Vision
                 </h4>
@@ -249,7 +233,7 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="bg-blue-50 p-6 rounded-lg">
+              <div className="bg-blue-50/80 backdrop-blur-sm p-6 rounded-lg">
                 <h4 className="text-2xl font-bold text-blue-600 mb-3">
                   Our Mission
                 </h4>
@@ -264,49 +248,12 @@ export default function HomePage() {
           </div>
         </div>
       </motion.section>
-      {/* <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="py-12 md:py-20 px-4 bg-blue-50"
-      >
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-6 md:gap-8">
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="bg-white p-6 md:p-10 rounded-xl shadow-lg transition-all duration-300"
-          >
-            <h3 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4 md:mb-6">
-              Vision
-            </h3>
-            <p className="text-gray-700 leading-relaxed text-lg md:text-xl">
-              To be globally recognized as an epitome of learning and
-              innovation, imparting multifaceted management education driven by
-              social sensitivity and supported by state of art infrastructure.
-            </p>
-          </motion.div>
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="bg-white p-6 md:p-10 rounded-xl shadow-lg transition-all duration-300"
-          >
-            <h3 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4 md:mb-6">
-              Mission
-            </h3>
-            <p className="text-gray-700 leading-relaxed text-lg md:text-xl">
-              To impart quality education that encourages students to be
-              competent enough for best-fit job roles. To provide faculty
-              members with facilities to research, experiment and implement
-              contemporary learning tools.
-            </p>
-          </motion.div>
-        </div>
-      </motion.section> */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
-        className="py-12 md:py-20 px-4 bg-gray-50"
+        className="py-12 md:py-20 px-4 bg-white/70 backdrop-blur-sm"
       >
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
           <div>
@@ -316,7 +263,7 @@ export default function HomePage() {
             <div className="grid gap-6">
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="bg-white p-6 rounded-xl shadow-lg"
+                className="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-lg"
               >
                 <div className="text-blue-600 font-bold mb-2 text-xl">
                   MAR 15, 2024
@@ -331,7 +278,7 @@ export default function HomePage() {
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="bg-white p-6 rounded-xl shadow-lg"
+                className="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-lg"
               >
                 <div className="text-blue-600 font-bold mb-2 text-xl">
                   APR 20, 2024
@@ -345,7 +292,7 @@ export default function HomePage() {
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="bg-white p-6 rounded-xl shadow-lg"
+                className="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-lg"
               >
                 <div className="text-blue-600 font-bold mb-2 text-xl">
                   MAY 10, 2024
@@ -367,7 +314,7 @@ export default function HomePage() {
             <div className="grid gap-4">
               <motion.div
                 whileHover={{ scale: 1.01 }}
-                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+                className="bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow hover:shadow-md transition-shadow"
               >
                 <Link
                   href="#"
@@ -378,7 +325,7 @@ export default function HomePage() {
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.01 }}
-                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+                className="bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow hover:shadow-md transition-shadow"
               >
                 <Link
                   href="#"
@@ -389,7 +336,7 @@ export default function HomePage() {
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.01 }}
-                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+                className="bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow hover:shadow-md transition-shadow"
               >
                 <Link
                   href="#"
@@ -400,7 +347,7 @@ export default function HomePage() {
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.01 }}
-                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+                className="bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow hover:shadow-md transition-shadow"
               >
                 <Link
                   href="#"
@@ -411,7 +358,7 @@ export default function HomePage() {
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.01 }}
-                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+                className="bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow hover:shadow-md transition-shadow"
               >
                 <Link
                   href="#"
@@ -422,7 +369,7 @@ export default function HomePage() {
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.01 }}
-                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+                className="bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow hover:shadow-md transition-shadow"
               >
                 <Link
                   href="#"
@@ -441,7 +388,7 @@ export default function HomePage() {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
-        className="py-12 md:py-20 px-4 bg-white"
+        className="py-12 md:py-20 px-4 bg-white/70 backdrop-blur-sm"
       >
         <div className="max-w-6xl mx-auto">
           <h3 className="text-3xl md:text-4xl font-bold text-blue-600 mb-8 text-center">
@@ -450,7 +397,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="bg-blue-50 p-6 rounded-xl shadow-lg"
+              className="bg-blue-50/80 backdrop-blur-sm p-6 rounded-xl shadow-lg"
             >
               <Image
                 src="/mms.jpeg"
@@ -466,7 +413,7 @@ export default function HomePage() {
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="bg-blue-50 p-6 rounded-xl shadow-lg"
+              className="bg-blue-50/80 backdrop-blur-sm p-6 rounded-xl shadow-lg"
             >
               <Image
                 src="/mca.jpeg"
@@ -482,7 +429,7 @@ export default function HomePage() {
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="bg-blue-50 p-6 rounded-xl shadow-lg"
+              className="bg-blue-50/80 backdrop-blur-sm p-6 rounded-xl shadow-lg"
             >
               <Image
                 src="/bms.jpeg"
@@ -498,7 +445,7 @@ export default function HomePage() {
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="bg-blue-50 p-6 rounded-xl shadow-lg"
+              className="bg-blue-50/80 backdrop-blur-sm p-6 rounded-xl shadow-lg"
             >
               <Image
                 src="/phd.jpeg"
@@ -523,7 +470,7 @@ export default function HomePage() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => {
-            reset(); // 👈 ADD THIS
+            reset();
             setShowEnquiry(true);
           }}
           type="button"
