@@ -83,17 +83,13 @@ pipeline {
             }
         }
 
-        // Uncomment and configure when you're ready to push images to a registry
-        // stage('Push Docker Images') {
-        //     steps {
-        //         script {
-        //             docker.withRegistry("${DOCKER_REGISTRY}", "${DOCKER_REGISTRY_CREDENTIALS}") {
-        //                 docker.image("${DOCKER_IMAGE_BACKEND}").push()
-        //                 docker.image("${DOCKER_IMAGE_FRONTEND}").push()
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Run with Docker Compose') {
+            steps {
+                sh "docker compose -f docker-compose.yml up -d"
+            }
+        }
+
+
     }
 
     post {
@@ -112,3 +108,4 @@ pipeline {
         }
     }
 }
+
